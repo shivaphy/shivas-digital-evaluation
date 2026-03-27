@@ -669,6 +669,85 @@ body {
 .viewer-tip strong { color: var(--blue); }
 
 /* ═══════════════════════════════════════════
+   BULK UPLOAD
+═══════════════════════════════════════════ */
+.bulk-view { flex:1; overflow-y:auto; padding:24px; background:var(--cream); }
+
+.bulk-steps {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px;
+}
+.bulk-step {
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--r-lg); padding:16px; text-align:center;
+}
+.bulk-step-num {
+  width:28px; height:28px; border-radius:50%;
+  background:var(--blue); color:white;
+  font-size:12px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 8px;
+}
+.bulk-step-title { font-size:12px; font-weight:700; color:var(--text); margin-bottom:4px; }
+.bulk-step-desc  { font-size:11px; color:var(--text3); line-height:1.5; }
+
+/* CSV drop zone */
+.csv-zone {
+  background:var(--white); border:2px dashed var(--border2);
+  border-radius:var(--r-lg); padding:32px;
+  display:flex; flex-direction:column; align-items:center;
+  gap:8px; cursor:pointer; transition:all 0.18s; text-align:center;
+  margin-bottom:16px;
+}
+.csv-zone:hover { border-color:var(--blue); background:var(--blue-lt); }
+.csv-zone.ready { border-style:solid; border-color:var(--green); background:var(--green-lt); }
+
+/* Student bulk table */
+.bulk-table {
+  width:100%; border-collapse:collapse;
+  background:var(--white); border:1px solid var(--border);
+  border-radius:var(--r-lg); overflow:hidden;
+  margin-bottom:16px;
+}
+.bulk-table th {
+  background:var(--cream2); padding:10px 14px;
+  font-size:10px; font-weight:700; text-transform:uppercase;
+  letter-spacing:0.06em; color:var(--text2);
+  text-align:left; border-bottom:1px solid var(--border);
+}
+.bulk-table td {
+  padding:10px 14px; font-size:12px; color:var(--text);
+  border-bottom:1px solid var(--border);
+  vertical-align:middle;
+}
+.bulk-table tr:last-child td { border-bottom:none; }
+.bulk-table tr:hover td { background:var(--cream); }
+.bulk-upload-btn {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:5px 10px; border-radius:6px; cursor:pointer;
+  font-size:11px; font-weight:600;
+  background:var(--blue-lt); color:var(--blue);
+  border:1px solid var(--blue-border); transition:all 0.15s;
+  white-space:nowrap;
+}
+.bulk-upload-btn:hover { background:var(--blue); color:white; }
+.bulk-upload-btn.done { background:var(--green-lt); color:var(--green); border-color:var(--green-mid); cursor:default; }
+.bulk-input { display:none; }
+
+.btn-commit-all {
+  padding:11px 28px; background:var(--green); color:white;
+  border:none; border-radius:var(--r); font-size:13px; font-weight:700;
+  font-family:'Plus Jakarta Sans',sans-serif; cursor:pointer;
+  box-shadow:0 2px 8px rgba(21,128,61,0.25); transition:opacity 0.15s;
+}
+.btn-commit-all:hover { opacity:0.88; }
+
+.template-link {
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:12px; color:var(--blue); cursor:pointer;
+  text-decoration:underline; margin-bottom:16px;
+}
+
+/* ═══════════════════════════════════════════
    TOAST
 ═══════════════════════════════════════════ */
 .toast {
@@ -683,6 +762,134 @@ body {
 .toast.show { transform: translateY(0); opacity: 1; }
 .toast.ok { background: #166534; }
 .toast.err { background: #991b1b; }
+
+/* ═══════════════════════════════════════════
+   NOTIFICATION BELL
+═══════════════════════════════════════════ */
+.notif-bell {
+  position: relative; cursor: pointer;
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--border2);
+  transition: all 0.15s; font-size: 15px;
+}
+.notif-bell:hover { background: var(--cream2); border-color: var(--border); }
+.notif-badge {
+  position: absolute; top: -4px; right: -4px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--red); color: white;
+  font-size: 9px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid white;
+}
+.notif-dropdown {
+  position: absolute; top: 54px; right: 60px;
+  width: 320px; background: var(--white);
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-lg); z-index: 999;
+  overflow: hidden; display: none;
+}
+.notif-dropdown.open { display: block; }
+.notif-hdr {
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.notif-hdr-title { font-size: 12px; font-weight: 700; color: var(--text); }
+.notif-clear { font-size: 11px; color: var(--blue); cursor: pointer; }
+.notif-clear:hover { text-decoration: underline; }
+.notif-item {
+  padding: 11px 16px; border-bottom: 1px solid var(--border);
+  display: flex; gap: 10px; align-items: flex-start;
+  transition: background 0.12s; cursor: pointer;
+}
+.notif-item:hover { background: var(--cream); }
+.notif-item:last-child { border-bottom: none; }
+.notif-item.unread { background: var(--blue-lt); }
+.notif-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); flex-shrink: 0; margin-top: 4px; }
+.notif-dot.read { background: transparent; border: 1px solid var(--border2); }
+.notif-text { font-size: 12px; color: var(--text); line-height: 1.5; }
+.notif-time { font-size: 10px; color: var(--text3); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+.notif-empty { padding: 24px; text-align: center; color: var(--text3); font-size: 12px; }
+
+/* ═══════════════════════════════════════════
+   SIDEBAR SEARCH & FILTER
+═══════════════════════════════════════════ */
+.sidebar-search {
+  padding: 8px 8px 4px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-search input {
+  width: 100%; padding: 6px 10px;
+  background: var(--cream2); border: 1px solid var(--border);
+  border-radius: 6px; font-size: 12px; outline: none;
+  font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text);
+  transition: all 0.15s;
+}
+.sidebar-search input:focus { border-color: var(--blue); background: var(--white); }
+.sidebar-filter {
+  display: flex; gap: 4px; padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.filter-chip {
+  padding: 3px 8px; border-radius: 4px; font-size: 10px;
+  font-weight: 600; cursor: pointer; border: 1px solid var(--border2);
+  background: transparent; color: var(--text3);
+  font-family: 'Plus Jakarta Sans', sans-serif; transition: all 0.12s;
+}
+.filter-chip.active { background: var(--blue-lt); color: var(--blue); border-color: var(--blue-border); }
+.filter-chip:hover { border-color: var(--text3); color: var(--text2); }
+
+/* ═══════════════════════════════════════════
+   STUDENT PROGRESS TRACKER (student view)
+═══════════════════════════════════════════ */
+.progress-bar-wrap {
+  background: var(--cream2); border: 1px solid var(--border);
+  border-radius: var(--r); overflow: hidden;
+  margin-bottom: 14px; height: 8px;
+}
+.progress-bar-fill {
+  height: 100%; border-radius: var(--r);
+  background: linear-gradient(90deg, var(--blue), var(--indigo));
+  transition: width 0.5s ease;
+}
+
+/* ═══════════════════════════════════════════
+   MULTI-QUESTION SUPPORT (OR logic)
+═══════════════════════════════════════════ */
+.or-banner {
+  background: var(--amber-lt); border: 1px solid var(--amber-mid);
+  border-radius: var(--r); padding: 9px 12px; margin-bottom: 12px;
+  font-size: 11px; color: var(--amber); font-weight: 600;
+  display: flex; align-items: center; gap: 6px;
+}
+.q-block {
+  border: 1px solid var(--border); border-radius: var(--r);
+  overflow: hidden; margin-bottom: 12px;
+}
+.q-block-hdr {
+  background: var(--cream2); padding: 8px 12px;
+  font-size: 11px; font-weight: 700; color: var(--text2);
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.q-block-hdr .use-btn {
+  font-size: 10px; padding: 3px 8px; border-radius: 4px;
+  background: var(--blue-lt); color: var(--blue);
+  border: 1px solid var(--blue-border); cursor: pointer; font-weight: 600;
+}
+.q-block-hdr .use-btn.active { background: var(--blue); color: white; }
+.q-block.inactive { opacity: 0.45; pointer-events: none; }
+
+/* ═══════════════════════════════════════════
+   SESSION PERSISTENCE INDICATOR
+═══════════════════════════════════════════ */
+.save-indicator {
+  font-size: 10px; color: var(--text3); font-family: 'JetBrains Mono', monospace;
+  display: flex; align-items: center; gap: 4px; padding: 4px 0;
+}
+.save-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+.save-dot.saving { background: var(--amber); animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
@@ -788,6 +995,17 @@ body {
     <div class="topbar-right">
       <span class="topbar-user" id="tb-user"></span>
       <span class="role-pill" id="tb-role"></span>
+      <div class="notif-bell" id="notif-bell" onclick="toggleNotif()">
+        🔔
+        <div class="notif-badge" id="notif-badge" style="display:none">0</div>
+      </div>
+      <div class="notif-dropdown" id="notif-dropdown">
+        <div class="notif-hdr">
+          <div class="notif-hdr-title">Notifications</div>
+          <span class="notif-clear" onclick="clearNotifs()">Mark all read</span>
+        </div>
+        <div id="notif-list"><div class="notif-empty">No notifications yet</div></div>
+      </div>
       <button class="btn-logout" onclick="doLogout()">Logout</button>
     </div>
   </div>
@@ -802,7 +1020,38 @@ body {
    STATE & MOCK DATA
 ════════════════════════════════════════ */
 const API = 'http://127.0.0.1:8000';
-let currentUser = null, currentRole = null, loginRole = 'faculty';
+let currentUser = null, currentRole = null, currentUsername = null, loginRole = 'faculty';
+
+/* ── Notifications ── */
+let NOTIFICATIONS = [];
+let notifOpen = false;
+
+/* ── Sidebar filter ── */
+let sidebarFilter = 'all';   // 'all' | 'pending' | 'graded' | 'flagged'
+let sidebarSearch = '';
+
+/* ── Active question block (OR logic) ── */
+let activeQBlock = 'Q1';     // 'Q1' | 'Q2'
+
+/* ── Session persistence helpers ── */
+function saveSession() {
+  try {
+    localStorage.setItem('sde_evals',    JSON.stringify(EVALS));
+    localStorage.setItem('sde_students', JSON.stringify(STUDENTS));
+    localStorage.setItem('sde_finalized',JSON.stringify(FINALIZED));
+  } catch(e) {}
+}
+function loadSession() {
+  try {
+    const ev = localStorage.getItem('sde_evals');
+    const st = localStorage.getItem('sde_students');
+    const fi = localStorage.getItem('sde_finalized');
+    if (ev) Object.assign(EVALS,     JSON.parse(ev));
+    if (st) { const arr = JSON.parse(st); arr.forEach(s => { if (!STUDENTS.find(x=>x.id===s.id)) STUDENTS.push(s); else Object.assign(STUDENTS.find(x=>x.id===s.id), s); }); }
+    if (fi) Object.assign(FINALIZED, JSON.parse(fi));
+  } catch(e) {}
+}
+
 
 /* Mock user DB (in real app: from backend) */
 const USER_DB = {
@@ -820,12 +1069,23 @@ let REG_QUEUE = [
 ];
 let MANAGED_USERS = Object.entries(USER_DB).map(([u,v])=>({username:u,...v}));
 
-const STUDENTS = [
-  {id:'STU-8829', name:'Arjun Mehta',   status:'pending', pages:8},
-  {id:'STU-8830', name:'Priya Nair',    status:'graded',  pages:6},
-  {id:'STU-8831', name:'Rahul Singh',   status:'flagged', pages:10},
-  {id:'STU-8832', name:'Ananya Reddy',  status:'pending', pages:7},
+/* ════════════════════════════════════════
+   STUDENT REGISTRY
+   Each entry: { id, name, status, username }
+   username links to USER_DB for student login
+════════════════════════════════════════ */
+let STUDENTS = [
+  {id:'STU-8829', name:'Arjun Mehta',  status:'pending', username:'student_001'},
+  {id:'STU-8830', name:'Priya Nair',   status:'graded',  username:'student_002'},
+  {id:'STU-8831', name:'Rahul Singh',  status:'flagged', username:'student_003'},
+  {id:'STU-8832', name:'Ananya Reddy', status:'pending', username:'student_004'},
 ];
+
+/* Add student users to USER_DB */
+USER_DB['student_002'] = { pw:'stu002', role:'student', name:'Priya Nair',   status:'approved' };
+USER_DB['student_003'] = { pw:'stu003', role:'student', name:'Rahul Singh',  status:'approved' };
+USER_DB['student_004'] = { pw:'stu004', role:'student', name:'Ananya Reddy', status:'approved' };
+
 const EVALS = {
   'STU-8829': { AI:{q1a:4.5,q1b:3.5,total:8.0,conf:0.88,fb:'Strong understanding. Formula applied correctly.'}, FACULTY:{}, STUDENT:{q1a:5,q1b:4.5,total:9.5,just:"Showed all derivation steps clearly."} },
   'STU-8830': { AI:{q1a:4.0,q1b:4.0,total:8.0,conf:0.91}, FACULTY:{q1a:4,q1b:3,total:7.0}, STUDENT:{q1a:4,q1b:4,total:8.0} },
@@ -834,10 +1094,31 @@ const EVALS = {
 };
 const FINALIZED = {};
 
-/* PDF object URLs per slot */
-let pdfURLs = { 'question-paper': null, 'scheme': null, 'answer-script': null };
+/* ════════════════════════════════════════
+   PDF STORE — per-student, per-slot
+   Structure: STU_PDFS['STU-8829']['answer-script'] = objectURL
+   Global slots (question-paper, scheme) shared across all students
+════════════════════════════════════════ */
+let STU_PDFS = {};          // per-student answer scripts
+let GLOBAL_PDFS = {         // shared question paper & scheme
+  'question-paper': null,
+  'scheme': null,
+};
+
+/* Helper: get PDF URL for a student + slot */
+function getPdfUrl(sid, slot) {
+  if (slot === 'answer-script') return (STU_PDFS[sid] || {})['answer-script'] || null;
+  return GLOBAL_PDFS[slot] || null;
+}
+
 let currentStudent = 'STU-8829';
-let activeTabIdx = 0;
+let activeTabIdx   = 0;
+
+/* Helper: find student ID from logged-in username */
+function getStudentIdForUser(username) {
+  const s = STUDENTS.find(s => s.username === username);
+  return s ? s.id : null;
+}
 
 /* ════════════════════════════════════════
    SCREEN HELPERS
@@ -880,6 +1161,7 @@ async function doLogin() {
       const d = await res.json();
       currentUser = d.name || uname;
       currentRole = d.role;
+      currentUsername = uname;
       authenticated = true;
     }
   } catch {}
@@ -887,7 +1169,7 @@ async function doLogin() {
   if (!authenticated) {
     const u = USER_DB[uname];
     if (u && u.pw === pw && u.status === 'approved') {
-      currentUser = u.name; currentRole = u.role; authenticated = true;
+      currentUser = u.name; currentRole = u.role; currentUsername = uname; authenticated = true;
     } else if (u && u.status === 'pending') {
       err.textContent = '⏳ Your account is pending admin approval.';
       err.style.display = 'block';
@@ -1046,18 +1328,98 @@ function registerUser() {
    APP
 ════════════════════════════════════════ */
 function startApp() {
+  loadSession();   // restore any persisted evals/students
   document.getElementById('tb-user').textContent = currentUser;
   const rEl = document.getElementById('tb-role');
   rEl.textContent = currentRole.toUpperCase();
   rEl.className = `role-pill role-${currentRole}`;
+
+  /* If student, lock them to their own record only */
+  if (currentRole === 'student') {
+    const sid = getStudentIdForUser(currentUsername);
+    if (sid) currentStudent = sid;
+  }
+
+  /* Welcome notification */
+  addNotif(`Welcome back, ${currentUser}!`, 'info');
+  if (currentRole === 'hod') {
+    const pending = STUDENTS.filter(s => !FINALIZED[s.id]).length;
+    if (pending > 0) addNotif(`${pending} student${pending>1?'s':''} pending final moderation.`, 'warn');
+    const flagged = STUDENTS.filter(s => {
+      const ev=EVALS[s.id]||{}; const ai=ev.AI||{}; const fac=ev.FACULTY||{};
+      const aT=ai.total??null; const fT=fac.total??null;
+      return aT!==null && fT!==null && Math.abs(aT-fT)/Math.max(aT,1)*100>15;
+    }).length;
+    if (flagged > 0) addNotif(`⚠ ${flagged} student${flagged>1?'s':''} flagged for high deviation.`, 'err');
+  }
+  if (currentRole === 'faculty') {
+    const ungraded = STUDENTS.filter(s => !(EVALS[s.id]||{}).FACULTY?.total).length;
+    if (ungraded > 0) addNotif(`${ungraded} script${ungraded>1?'s':''} awaiting your marks entry.`, 'warn');
+  }
+
   showScreen('app');
   buildTabs();
 }
 
+/* ════════════════════════════════════════
+   NOTIFICATIONS
+════════════════════════════════════════ */
+function addNotif(text, type='info') {
+  const now = new Date();
+  const time = now.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+  NOTIFICATIONS.unshift({ text, type, time, read: false });
+  renderNotifBadge();
+}
+function renderNotifBadge() {
+  const unread = NOTIFICATIONS.filter(n=>!n.read).length;
+  const badge  = document.getElementById('notif-badge');
+  if (badge) {
+    badge.textContent = unread;
+    badge.style.display = unread > 0 ? 'flex' : 'none';
+  }
+}
+function toggleNotif() {
+  notifOpen = !notifOpen;
+  const dd = document.getElementById('notif-dropdown');
+  if (dd) dd.classList.toggle('open', notifOpen);
+  if (notifOpen) renderNotifList();
+}
+function renderNotifList() {
+  const el = document.getElementById('notif-list');
+  if (!el) return;
+  if (!NOTIFICATIONS.length) { el.innerHTML = '<div class="notif-empty">No notifications</div>'; return; }
+  el.innerHTML = NOTIFICATIONS.map((n,i) => `
+    <div class="notif-item ${n.read?'':'unread'}" onclick="markRead(${i})">
+      <div class="notif-dot ${n.read?'read':''}"></div>
+      <div>
+        <div class="notif-text">${n.text}</div>
+        <div class="notif-time">${n.time}</div>
+      </div>
+    </div>`).join('');
+}
+function markRead(i) {
+  NOTIFICATIONS[i].read = true;
+  renderNotifBadge();
+  renderNotifList();
+}
+function clearNotifs() {
+  NOTIFICATIONS.forEach(n => n.read = true);
+  renderNotifBadge();
+  renderNotifList();
+}
+/* Close dropdown on outside click */
+document.addEventListener('click', e => {
+  if (notifOpen && !e.target.closest('#notif-bell') && !e.target.closest('#notif-dropdown')) {
+    notifOpen = false;
+    const dd = document.getElementById('notif-dropdown');
+    if (dd) dd.classList.remove('open');
+  }
+});
+
 function buildTabs() {
   const tabsMap = {
-    faculty: ['📋 Evaluation', '📤 Upload Session'],
-    hod:     ['📊 Moderation', '📋 Evaluation', '📤 Upload Session'],
+    faculty: ['📋 Evaluation', '📤 Upload Session', '📦 Bulk Upload'],
+    hod:     ['📊 Moderation', '📋 Evaluation', '📤 Upload Session', '📦 Bulk Upload'],
     student: ['✍️ Self-Assessment'],
   };
   const tabs = tabsMap[currentRole] || ['📋 Evaluation'];
@@ -1073,8 +1435,8 @@ function switchTab(i) {
 }
 function renderView(i) {
   const views = {
-    faculty: [renderEvalView, renderUploadView],
-    hod:     [renderHodView, renderEvalView, renderUploadView],
+    faculty: [renderEvalView, renderUploadView, renderBulkUploadView],
+    hod:     [renderHodView, renderEvalView, renderUploadView, renderBulkUploadView],
     student: [renderStudentView],
   }[currentRole] || [renderEvalView];
   (views[i] || renderEvalView)();
@@ -1087,61 +1449,183 @@ function renderEvalView() {
   const mc = document.getElementById('main-content');
   mc.innerHTML = `
     <div class="sidebar">
-      <div class="sidebar-hdr">Answer Scripts</div>
+      <div class="sidebar-hdr">Answer Scripts
+        <span style="float:right;font-family:'JetBrains Mono',monospace">${STUDENTS.length}</span>
+      </div>
+      <div class="sidebar-search">
+        <input type="text" placeholder="🔍 Search name or ID…"
+          value="${sidebarSearch}" oninput="sidebarSearchChanged(this.value)">
+      </div>
+      <div class="sidebar-filter">
+        ${['all','pending','graded','flagged'].map(f=>`
+          <button class="filter-chip ${sidebarFilter===f?'active':''}"
+            onclick="setSidebarFilter('${f}')">${f.charAt(0).toUpperCase()+f.slice(1)}</button>`).join('')}
+      </div>
       <div class="sidebar-list" id="stu-list"></div>
     </div>
     <div class="viewer-wrap" id="viewer-wrap"></div>`;
   renderStuList();
   renderEvalRight();
 }
-function renderStudentView() { renderEvalView(); }
+function renderStudentView() {
+  const mc = document.getElementById('main-content');
+  const sid = getStudentIdForUser(currentUsername);
+  const stu = STUDENTS.find(s => s.id === sid);
+
+  if (!stu) {
+    mc.innerHTML = `<div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--text3)">
+      <div style="font-size:32px">📭</div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2)">No exam session assigned yet</div>
+      <div style="font-size:12px">Your faculty has not uploaded your answer script yet.<br>Please check back later.</div>
+    </div>`;
+    return;
+  }
+
+  /* Check if answer script is available */
+  const hasScript = !!getPdfUrl(sid, 'answer-script');
+
+  if (!hasScript) {
+    mc.innerHTML = `<div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--text3);padding:40px;text-align:center">
+      <div style="font-size:32px">⏳</div>
+      <div style="font-size:14px;font-weight:600;color:var(--text2)">Answer Script Not Yet Available</div>
+      <div style="font-size:12px;max-width:320px;line-height:1.7">
+        Hello <strong style="color:var(--text)">${stu.name}</strong>, your faculty has registered you but hasn't uploaded your answer script yet.<br><br>
+        Once uploaded, your scanned script will appear here for self-assessment.
+      </div>
+      <div style="background:var(--blue-lt);border:1px solid var(--blue-border);border-radius:var(--r);padding:12px 18px;font-size:11px;color:var(--blue);margin-top:8px">
+        Student ID: <strong>${sid}</strong>
+      </div>
+    </div>`;
+    return;
+  }
+
+  /* Render the self-assessment view for this student only */
+  currentStudent = sid;
+  mc.innerHTML = `<div class="viewer-wrap" id="viewer-wrap"></div>`;
+  renderEvalRight();
+}
+
+function sidebarSearchChanged(val) { sidebarSearch = val.toLowerCase(); renderStuList(); }
+function setSidebarFilter(f) { sidebarFilter = f; renderStuList(); }
 
 function renderStuList() {
   const el = document.getElementById('stu-list');
   if (!el) return;
-  el.innerHTML = STUDENTS.map(s => `
+  const filtered = STUDENTS.filter(s => {
+    const matchSearch = !sidebarSearch ||
+      s.name.toLowerCase().includes(sidebarSearch) ||
+      s.id.toLowerCase().includes(sidebarSearch);
+    const matchFilter = sidebarFilter === 'all' || s.status === sidebarFilter;
+    return matchSearch && matchFilter;
+  });
+  if (!filtered.length) {
+    el.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text3);font-size:12px">No students match</div>`;
+    return;
+  }
+  el.innerHTML = filtered.map(s => {
+    const ev  = EVALS[s.id] || {};
+    const fin = FINALIZED[s.id];
+    const hasAI  = !!(ev.AI && ev.AI.total);
+    const hasFac = !!(ev.FACULTY && ev.FACULTY.total);
+    const hasStu = !!(ev.STUDENT && ev.STUDENT.total);
+    return `
     <div class="stu-item ${s.id===currentStudent?'active':''}" onclick="selectStu('${s.id}')">
-      <div class="stu-id">${s.id}</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div class="stu-id">${s.id}</div>
+        ${fin ? `<span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--green);font-weight:700">✓FIN</span>` : ''}
+      </div>
       <div class="stu-name">${s.name}</div>
       <div class="stu-st st-${s.status}">${s.status.toUpperCase()}</div>
-    </div>`).join('');
+      <div style="display:flex;gap:3px;margin-top:5px">
+        <span style="font-size:9px;padding:2px 5px;border-radius:3px;background:${hasAI?'var(--purple-lt)':'var(--cream2)'};color:${hasAI?'var(--purple)':'var(--text3)'}">AI</span>
+        <span style="font-size:9px;padding:2px 5px;border-radius:3px;background:${hasFac?'var(--blue-lt)':'var(--cream2)'};color:${hasFac?'var(--blue)':'var(--text3)'}">FAC</span>
+        <span style="font-size:9px;padding:2px 5px;border-radius:3px;background:${hasStu?'var(--green-lt)':'var(--cream2)'};color:${hasStu?'var(--green)':'var(--text3)'}">STU</span>
+      </div>
+    </div>`;
+  }).join('');
 }
-function selectStu(id) { currentStudent = id; renderStuList(); renderEvalRight(); }
+function selectStu(id) { currentStudent = id; activeQBlock = 'Q1'; renderStuList(); renderEvalRight(); }
 
 function renderEvalRight() {
   const vw = document.getElementById('viewer-wrap');
   if (!vw) return;
-  const stu = STUDENTS.find(s => s.id === currentStudent) || {};
-  const ev  = EVALS[currentStudent] || {};
-  const ai  = ev.AI || {}, fac = ev.FACULTY || {}, stuEv = ev.STUDENT || {};
+  const stu      = STUDENTS.find(s => s.id === currentStudent) || {};
+  const ev       = EVALS[currentStudent] || {};
+  const ai       = ev.AI || {}, fac = ev.FACULTY || {}, stuEv = ev.STUDENT || {};
   const isStudent = currentRole === 'student';
-  const myEv = isStudent ? stuEv : fac;
-  const myLabel = isStudent ? 'SELF' : 'FACULTY';
+  const myEv     = isStudent ? stuEv : fac;
+  const myLabel  = isStudent ? 'SELF' : 'FACULTY';
+  const alreadySubmitted = isStudent ? !!stuEv.total : !!fac.total;
+  const finalized = !!FINALIZED[currentStudent];
 
-  /* PDF viewer — pick which doc to show based on selector */
-  const pdfSlots = ['answer-script','question-paper','scheme'];
-  const pdfLabels = ['Answer Script','Question Paper','Scheme of Evaluation'];
+  /* Students only see their own answer script — no doc switcher */
+  const pdfSlots  = isStudent
+    ? ['answer-script']
+    : ['answer-script','question-paper','scheme'];
+  const pdfLabels = isStudent
+    ? ['Your Answer Script']
+    : ['Answer Script','Question Paper','Scheme of Evaluation'];
 
   vw.innerHTML = `
     <div class="pdf-pane">
       <div class="pane-bar">
-        <span class="pane-bar-title" id="pdf-pane-title">Answer Script — ${stu.name || currentStudent}</span>
+        <span class="pane-bar-title">
+          ${isStudent ? `Your Answer Script — ${stu.name||currentStudent}` : `Answer Script — ${stu.name||currentStudent}`}
+        </span>
+        ${!isStudent ? `
         <select id="pdf-doc-select" onchange="switchPdfView(this.value)">
           ${pdfSlots.map((s,i)=>`<option value="${s}">${pdfLabels[i]}</option>`).join('')}
-        </select>
+        </select>` : ''}
       </div>
       <div class="pdf-scroll-area" id="pdf-scroll-area">
-        ${renderPdfContent('answer-script')}
+        ${renderPdfContent('answer-script', currentStudent)}
       </div>
     </div>
 
     <div class="marks-panel">
       <div class="pane-bar">
         <span class="pane-bar-title">${isStudent?'SELF-ASSESSMENT':'MARKS ENTRY'}</span>
-        ${ai.conf ? `<span style="font-size:10px;color:var(--green);font-family:'JetBrains Mono',monospace;margin-left:auto">AI READY ✓</span>` : ''}
+        ${finalized
+          ? `<span style="font-size:10px;color:var(--green);font-family:'JetBrains Mono',monospace;margin-left:auto">FINALIZED ✓</span>`
+          : ai.conf
+            ? `<span style="font-size:10px;color:var(--green);font-family:'JetBrains Mono',monospace;margin-left:auto">AI READY ✓</span>`
+            : ''}
       </div>
       <div class="marks-body">
-        ${isStudent?'': `<button class="btn-ai" id="ai-btn" onclick="runAI()">✦ ${ai.total?'RE-RUN AI ANALYSIS':'RUN AI ANALYSIS'}</button>`}
+        <!-- Progress bar -->
+        ${!isStudent ? (() => {
+          const ev2=EVALS[currentStudent]||{};
+          const steps = [!!(ev2.AI&&ev2.AI.total), !!(ev2.FACULTY&&ev2.FACULTY.total), !!(ev2.STUDENT&&ev2.STUDENT.total), !!FINALIZED[currentStudent]];
+          const pct = Math.round(steps.filter(Boolean).length / steps.length * 100);
+          return `<div style="margin-bottom:14px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span class="sec-label" style="margin-bottom:0">Evaluation Progress</span>
+              <span style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text3)">${pct}%</span>
+            </div>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:4px">
+              ${['AI','Faculty','Student','Final'].map((l,i)=>`
+                <span style="font-size:9px;font-family:'JetBrains Mono',monospace;color:${steps[i]?'var(--green)':'var(--text3)'}">${steps[i]?'✓':l}</span>`).join('')}
+            </div>
+          </div>`;
+        })() : ''}
+
+        <div class="save-indicator" id="save-ind">
+          <div class="save-dot"></div>
+          <span>Auto-saved</span>
+        </div>
+
+        ${/* Finalized banner */finalized ? `
+        <div style="background:var(--green-lt);border:1px solid var(--green-mid);border-radius:var(--r);padding:10px 12px;margin-bottom:14px;font-size:12px;color:var(--green)">
+          ✅ <strong>Marks finalised</strong> — Committed from ${FINALIZED[currentStudent].from}: <strong>${FINALIZED[currentStudent].total} / 10</strong>
+        </div>` : ''}
+
+        ${/* Already submitted banner for student */isStudent && alreadySubmitted ? `
+        <div style="background:var(--blue-lt);border:1px solid var(--blue-border);border-radius:var(--r);padding:10px 12px;margin-bottom:14px;font-size:12px;color:var(--blue)">
+          ✅ <strong>Self-assessment submitted.</strong> You can update and re-submit until the faculty finalises marks.
+        </div>` : ''}
+
+        ${!isStudent ? `<button class="btn-ai" id="ai-btn" onclick="runAI()">✦ ${ai.total?'RE-RUN AI ANALYSIS':'RUN AI ANALYSIS'}</button>` : ''}
 
         <div class="ai-card ${ai.total?'show':''}" id="ai-card">
           <div class="ai-card-hdr">
@@ -1157,66 +1641,215 @@ function renderEvalRight() {
           ${ai.fb?`<div class="ai-fb">${ai.fb}</div>`:''}
         </div>
 
-        <div class="sec-label">${isStudent?'Your Self-Assessment':'Manual Marks Entry'} — Q1</div>
-        <div class="marks-form">
-          <div class="marks-row">
-            <div><div class="mq-label">Q1 (a)</div><div class="mq-max">Max: 5 marks</div></div>
-            <div class="marks-inp-group">
-              ${!isStudent && ai.q1a!=null?`<span class="ai-chip" onclick="fillAI('q1a',${ai.q1a})" title="Use AI suggestion">↑ ${ai.q1a}</span>`:''}
-              <input class="marks-inp" id="inp-q1a" type="number" min="0" max="5" step="0.5"
-                value="${myEv.q1a??''}" oninput="calcTotal()" placeholder="0">
-            </div>
+        <div class="sec-label">${isStudent?'Your Self-Assessment':'Manual Marks Entry'}</div>
+
+        ${/* OR-logic conflict warning */ ev.choiceConflict ? `
+        <div class="or-banner">⚠ Student answered both Q1 and Q2. Select which question to use for marking.</div>` : ''}
+
+        <!-- Q1 Block -->
+        <div class="q-block ${activeQBlock==='Q2'?'inactive':''}" id="q-block-Q1">
+          <div class="q-block-hdr">
+            <span>Question 1</span>
+            ${ev.choiceConflict ? `<button class="use-btn ${activeQBlock==='Q1'?'active':''}" onclick="setActiveQ('Q1')">Use Q1</button>` : ''}
           </div>
-          <div class="marks-row">
-            <div><div class="mq-label">Q1 (b)</div><div class="mq-max">Max: 5 marks</div></div>
-            <div class="marks-inp-group">
-              ${!isStudent && ai.q1b!=null?`<span class="ai-chip" onclick="fillAI('q1b',${ai.q1b})" title="Use AI suggestion">↑ ${ai.q1b}</span>`:''}
-              <input class="marks-inp" id="inp-q1b" type="number" min="0" max="5" step="0.5"
-                value="${myEv.q1b??''}" oninput="calcTotal()" placeholder="0">
+          <div class="marks-form" style="border:none;border-radius:0;margin-bottom:0">
+            <div class="marks-row">
+              <div><div class="mq-label">Q1 (a)</div><div class="mq-max">Max: 5 marks</div></div>
+              <div class="marks-inp-group">
+                ${!isStudent && ai.q1a!=null?`<span class="ai-chip" onclick="fillAI('q1a',${ai.q1a})" title="AI suggests ${ai.q1a}">↑ ${ai.q1a}</span>`:''}
+                <input class="marks-inp" id="inp-q1a" type="number" min="0" max="5" step="0.5"
+                  value="${myEv.q1a??''}" oninput="calcTotal(5,'q1a')" placeholder="0" ${finalized?'disabled':''}>
+              </div>
+            </div>
+            <div class="marks-row">
+              <div><div class="mq-label">Q1 (b)</div><div class="mq-max">Max: 5 marks</div></div>
+              <div class="marks-inp-group">
+                ${!isStudent && ai.q1b!=null?`<span class="ai-chip" onclick="fillAI('q1b',${ai.q1b})" title="AI suggests ${ai.q1b}">↑ ${ai.q1b}</span>`:''}
+                <input class="marks-inp" id="inp-q1b" type="number" min="0" max="5" step="0.5"
+                  value="${myEv.q1b??''}" oninput="calcTotal(5,'q1b')" placeholder="0" ${finalized?'disabled':''}>
+              </div>
             </div>
           </div>
         </div>
 
+        <!-- Q2 Block (OR option — shown only if conflict detected or faculty unlocks it) -->
+        <div class="q-block ${activeQBlock==='Q1'&&!ev.choiceConflict?'inactive':''}" id="q-block-Q2" style="margin-top:8px">
+          <div class="q-block-hdr">
+            <span>Question 2 <span style="font-size:9px;color:var(--text3);font-weight:400">(OR alternative)</span></span>
+            ${ev.choiceConflict
+              ? `<button class="use-btn ${activeQBlock==='Q2'?'active':''}" onclick="setActiveQ('Q2')">Use Q2</button>`
+              : !isStudent ? `<button class="use-btn ${activeQBlock==='Q2'?'active':''}" onclick="setActiveQ(activeQBlock==='Q2'?'Q1':'Q2')">${activeQBlock==='Q2'?'Use Q1 instead':'Switch to Q2'}</button>` : ''}
+          </div>
+          <div class="marks-form" style="border:none;border-radius:0;margin-bottom:0">
+            <div class="marks-row">
+              <div><div class="mq-label">Q2 (a)</div><div class="mq-max">Max: 5 marks</div></div>
+              <div class="marks-inp-group">
+                <input class="marks-inp" id="inp-q2a" type="number" min="0" max="5" step="0.5"
+                  value="${myEv.q2a??''}" oninput="calcTotal(5,'q2a')" placeholder="0"
+                  ${finalized||activeQBlock==='Q1'?'disabled':''}>
+              </div>
+            </div>
+            <div class="marks-row">
+              <div><div class="mq-label">Q2 (b)</div><div class="mq-max">Max: 5 marks</div></div>
+              <div class="marks-inp-group">
+                <input class="marks-inp" id="inp-q2b" type="number" min="0" max="5" step="0.5"
+                  value="${myEv.q2b??''}" oninput="calcTotal(5,'q2b')" placeholder="0"
+                  ${finalized||activeQBlock==='Q1'?'disabled':''}>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="marks-err" style="display:none;font-size:11px;color:var(--red);margin:-8px 0 10px;padding:6px 10px;background:var(--red-lt);border-radius:6px;border:1px solid var(--red-mid)"></div>
+
         <div class="score-strip">
           <div class="sc-cell sc-ai"><div class="sc-cell-label">AI</div><div class="sc-cell-val" id="sc-ai">${ai.total??'—'}</div></div>
-          <div class="sc-cell sc-fac"><div class="sc-cell-label">${myLabel}</div><div class="sc-cell-val" id="sc-fac">${myEv.total??'0.0'}</div></div>
+          <div class="sc-cell sc-fac"><div class="sc-cell-label">${myLabel}</div><div class="sc-cell-val" id="sc-fac">${myEv.total!=null?myEv.total:'0.0'}</div></div>
           <div class="sc-cell sc-stu"><div class="sc-cell-label">STUDENT</div><div class="sc-cell-val">${stuEv.total??'—'}</div></div>
         </div>
 
         <div class="sec-label">Justification ${isStudent?'(required)':'(optional)'}</div>
-        <textarea class="just-area" id="just-inp" placeholder="${isStudent?'Explain your answers and the marks you believe you deserve...':'Notes for the moderator...'}">${myEv.just||''}</textarea>
+        <textarea class="just-area" id="just-inp"
+          placeholder="${isStudent?'Explain your answers and the marks you believe you deserve...':'Notes for the moderator...'}"
+          ${finalized?'disabled':''}>${myEv.just||''}</textarea>
 
+        ${!finalized ? `
         <button class="btn-submit" id="submit-btn" onclick="submitMarks()">
-          ${isStudent?'Submit Self-Assessment':'Finalise Evaluation'}
-        </button>
+          ${isStudent?(alreadySubmitted?'Update Self-Assessment':'Submit Self-Assessment'):'Finalise Evaluation'}
+        </button>` : ''}
+
+        ${!isStudent && !finalized ? `
+        <button style="width:100%;margin-top:8px;padding:9px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);font-size:12px;color:var(--text2);cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;"
+          onclick="exportStudentReport('${currentStudent}')">
+          📄 Export Report (PDF Print)
+        </button>` : ''}
       </div>
     </div>`;
 }
 
-function renderPdfContent(slot) {
-  const url = pdfURLs[slot];
+function renderPdfContent(slot, sid) {
+  const url = getPdfUrl(sid || currentStudent, slot);
   if (!url) {
     return `<div class="pdf-empty">
       <div class="pdf-empty-icon">📄</div>
       <div class="pdf-empty-text">No PDF loaded for this slot</div>
-      <div style="font-size:11px;color:var(--text3);margin-top:4px">Upload files in the "Upload Session" tab</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px">Upload files in the "Upload Session" or "Bulk Upload" tab</div>
     </div>`;
   }
-  /* Render as iframe — works cross-browser for in-memory blobs */
   return `<iframe src="${url}" style="width:100%;min-height:800px;border:none;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,0.08)" title="PDF Viewer"></iframe>`;
 }
 
 function switchPdfView(slot) {
   const area = document.getElementById('pdf-scroll-area');
-  if (area) area.innerHTML = renderPdfContent(slot);
+  if (area) area.innerHTML = renderPdfContent(slot, currentStudent);
 }
 
-function fillAI(q, v) { const el = document.getElementById(`inp-${q}`); if(el){el.value=v; calcTotal();} }
-function calcTotal() {
-  const a = parseFloat(document.getElementById('inp-q1a')?.value)||0;
-  const b = parseFloat(document.getElementById('inp-q1b')?.value)||0;
+function setActiveQ(q) {
+  activeQBlock = q;
+  /* Toggle disabled state on inputs */
+  ['q1a','q1b'].forEach(id => {
+    const el = document.getElementById(`inp-${id}`);
+    if (el) el.disabled = (q === 'Q2');
+  });
+  ['q2a','q2b'].forEach(id => {
+    const el = document.getElementById(`inp-${id}`);
+    if (el) el.disabled = (q === 'Q1');
+  });
+  document.querySelectorAll('.q-block').forEach((b,i) => {
+    b.classList.toggle('inactive', i === (q==='Q1'?1:0));
+  });
+  document.querySelectorAll('.use-btn').forEach((b,i) => b.classList.toggle('active', i===(q==='Q1'?0:1)));
+  calcTotal(5, null);
+}
+
+function fillAI(qkey, v) {
+  const el = document.getElementById(`inp-${qkey}`);
+  if (el && !el.disabled) { el.value = v; calcTotal(5, qkey); }
+}
+
+function calcTotal(max, changedQ) {
+  const errEl = document.getElementById('marks-err');
+  /* Read whichever Q block is active */
+  const useQ2 = activeQBlock === 'Q2';
+  const aKey  = useQ2 ? 'inp-q2a' : 'inp-q1a';
+  const bKey  = useQ2 ? 'inp-q2b' : 'inp-q1b';
+  const aEl   = document.getElementById(aKey);
+  const bEl   = document.getElementById(bKey);
+  if (!aEl || !bEl) return;
+
+  let a = parseFloat(aEl.value);
+  let b = parseFloat(bEl.value);
+  let err = '';
+  if (!isNaN(a) && a > 5) { aEl.value = 5; a = 5; err = '⚠ Marks cannot exceed the maximum (5) per sub-question.'; }
+  if (!isNaN(b) && b > 5) { bEl.value = 5; b = 5; err = '⚠ Marks cannot exceed the maximum (5) per sub-question.'; }
+  if (!isNaN(a) && a < 0) { aEl.value = 0; a = 0; }
+  if (!isNaN(b) && b < 0) { bEl.value = 0; b = 0; }
+  if (errEl) { errEl.textContent = err; errEl.style.display = err ? 'block' : 'none'; }
+
+  const total = (isNaN(a)?0:a) + (isNaN(b)?0:b);
   const sc = document.getElementById('sc-fac');
-  if (sc) sc.textContent = (a+b).toFixed(1);
+  if (sc) sc.textContent = total.toFixed(1);
+
+  /* Auto-save indicator */
+  const ind = document.getElementById('save-ind');
+  if (ind) {
+    ind.innerHTML = '<div class="save-dot saving"></div><span>Saving…</span>';
+    clearTimeout(ind._t);
+    ind._t = setTimeout(() => {
+      ind.innerHTML = '<div class="save-dot"></div><span>Auto-saved</span>';
+      saveSession();
+    }, 800);
+  }
+}
+
+async function submitMarks() {
+  const errEl  = document.getElementById('marks-err');
+  const useQ2  = activeQBlock === 'Q2';
+  const aKey   = useQ2 ? 'inp-q2a' : 'inp-q1a';
+  const bKey   = useQ2 ? 'inp-q2b' : 'inp-q1b';
+  const a      = parseFloat(document.getElementById(aKey)?.value) || 0;
+  const b      = parseFloat(document.getElementById(bKey)?.value) || 0;
+  const just   = document.getElementById('just-inp')?.value || '';
+  const type   = currentRole === 'student' ? 'STUDENT' : 'FACULTY';
+
+  /* Validation */
+  if (a > 5 || b > 5) {
+    if (errEl) { errEl.textContent = '⚠ Marks exceed maximum allowed.'; errEl.style.display = 'block'; } return;
+  }
+  if (currentRole === 'student' && !just.trim()) {
+    if (errEl) { errEl.textContent = '⚠ Justification is required for self-assessment.'; errEl.style.display = 'block'; } return;
+  }
+  if (errEl) errEl.style.display = 'none';
+
+  const total   = a + b;
+  const marksObj = useQ2
+    ? { q2a:a, q2b:b, total, activeQ:'Q2', just }
+    : { q1a:a, q1b:b, total, activeQ:'Q1', just };
+  const payload = { student_id: currentStudent, evaluator_type: type, marks: marksObj, justification: just };
+
+  try {
+    await fetch(`${API}/submit-marks`, {
+      method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
+    });
+  } catch {}
+
+  /* Update state */
+  EVALS[currentStudent]       = EVALS[currentStudent] || {};
+  EVALS[currentStudent][type] = marksObj;
+
+  /* Update student status */
+  const stu = STUDENTS.find(s => s.id === currentStudent);
+  if (stu && type === 'FACULTY') stu.status = 'graded';
+
+  /* Persist */
+  saveSession();
+
+  /* Notification */
+  const stuName = stu?.name || currentStudent;
+  addNotif(`${type === 'STUDENT' ? 'Self-assessment' : 'Evaluation'} submitted for ${stuName} — ${total}/10`, 'info');
+
+  toast(`${type === 'STUDENT' ? 'Self-assessment' : 'Evaluation'} submitted ✓`, 'ok');
+  renderEvalRight();
+  renderStuList();
 }
 
 async function runAI() {
@@ -1243,18 +1876,79 @@ async function runAI() {
   toast('AI analysis complete ✦', 'ok');
 }
 
-async function submitMarks() {
-  const a    = parseFloat(document.getElementById('inp-q1a')?.value)||0;
-  const b    = parseFloat(document.getElementById('inp-q1b')?.value)||0;
-  const just = document.getElementById('just-inp')?.value || '';
-  const type = currentRole === 'student' ? 'STUDENT' : 'FACULTY';
-  const payload = {student_id:currentStudent, evaluator_type:type, marks:{q1a:a,q1b:b,total:a+b}, justification:just};
-  try { await fetch(`${API}/submit-marks`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); } catch {}
-  EVALS[currentStudent] = EVALS[currentStudent] || {};
-  EVALS[currentStudent][type] = {q1a:a, q1b:b, total:a+b, just};
-  toast('Evaluation submitted ✓', 'ok');
-  const btn = document.getElementById('submit-btn');
-  if (btn) { btn.textContent = '✓ Submitted'; btn.classList.add('done'); setTimeout(()=>{btn.classList.remove('done');btn.textContent='Finalise Evaluation';},2500); }
+/* ════════════════════════════════════════
+   EXPORT REPORT
+════════════════════════════════════════ */
+function exportStudentReport(sid) {
+  const stu = STUDENTS.find(s => s.id === sid) || { id: sid, name: sid };
+  const ev  = EVALS[sid] || {};
+  const ai  = ev.AI || {}, fac = ev.FACULTY || {}, stuEv = ev.STUDENT || {};
+  const fin = FINALIZED[sid];
+
+  const html = `<!DOCTYPE html>
+<html><head>
+<title>Evaluation Report — ${stu.name}</title>
+<style>
+  body { font-family: Georgia, serif; max-width: 700px; margin: 40px auto; color: #1e1c18; }
+  h1 { font-size: 22px; border-bottom: 2px solid #1d4ed8; padding-bottom: 10px; }
+  h2 { font-size: 14px; color: #5a5649; text-transform: uppercase; letter-spacing: 0.06em; margin: 24px 0 10px; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  th { background: #eff6ff; padding: 9px 12px; font-size: 12px; text-align: left; border: 1px solid #bfdbfe; }
+  td { padding: 9px 12px; font-size: 13px; border: 1px solid #ddd8cc; }
+  .final { background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 8px; padding: 14px 18px; margin-top: 20px; }
+  .final-label { font-size: 11px; color: #15803d; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+  .final-val { font-size: 32px; font-weight: 700; color: #15803d; }
+  @media print { body { margin: 20px; } }
+</style>
+</head><body>
+<h1>SHIVA'S Digital Evaluation — Score Report</h1>
+<p><strong>Student:</strong> ${stu.name} &nbsp;|&nbsp; <strong>ID:</strong> ${stu.id} &nbsp;|&nbsp; <strong>Date:</strong> ${new Date().toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'})}</p>
+
+<h2>Tri-Phase Evaluation Summary</h2>
+<table>
+  <tr><th>Evaluator</th><th>Q1 (a)</th><th>Q1 (b)</th><th>Total / 10</th><th>Notes</th></tr>
+  <tr><td>🤖 AI Agent</td><td>${ai.q1a??'—'}</td><td>${ai.q1b??'—'}</td><td><strong>${ai.total??'—'}</strong></td><td>Confidence: ${ai.conf?Math.round(ai.conf*100)+'%':'—'}</td></tr>
+  <tr><td>👩‍🏫 Faculty</td><td>${fac.q1a??'—'}</td><td>${fac.q1b??'—'}</td><td><strong>${fac.total??'—'}</strong></td><td>${fac.just||'—'}</td></tr>
+  <tr><td>✍️ Student</td><td>${stuEv.q1a??'—'}</td><td>${stuEv.q1b??'—'}</td><td><strong>${stuEv.total??'—'}</strong></td><td>${stuEv.just||'—'}</td></tr>
+</table>
+
+${ai.fb ? `<p><strong>AI Feedback:</strong> ${ai.fb}</p>` : ''}
+
+${fin ? `
+<div class="final">
+  <div class="final-label">✅ Official Final Marks (Committed by HoD)</div>
+  <div class="final-val">${fin.total} / 10</div>
+  <div style="font-size:12px;color:#5a5649;margin-top:4px">Source: ${fin.from}</div>
+</div>` : '<p style="color:#b45309">⏳ Marks not yet finalised by HoD.</p>'}
+</body></html>`;
+
+  const w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+  setTimeout(() => w.print(), 500);
+}
+
+function exportAllResults() {
+  /* Build CSV of all finalised results */
+  const rows = ['Student ID,Student Name,AI Marks,Faculty Marks,Student Marks,Final Marks,Committed By,Status'];
+  STUDENTS.forEach(s => {
+    const ev  = EVALS[s.id] || {};
+    const ai  = ev.AI || {}, fac = ev.FACULTY || {}, stu = ev.STUDENT || {};
+    const fin = FINALIZED[s.id];
+    rows.push([
+      s.id, s.name,
+      ai.total??'', fac.total??'', stu.total??'',
+      fin?fin.total:'', fin?fin.from:'',
+      fin?'Finalised':'Pending'
+    ].join(','));
+  });
+  const blob = new Blob([rows.join('\n')], { type:'text/csv' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `evaluation_results_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Results exported as CSV ✓', 'ok');
 }
 
 /* ════════════════════════════════════════
@@ -1262,10 +1956,42 @@ async function submitMarks() {
 ════════════════════════════════════════ */
 function renderHodView() {
   const mc = document.getElementById('main-content');
+  const totalStudents  = STUDENTS.length;
+  const finalised      = Object.keys(FINALIZED).length;
+  const pending        = totalStudents - finalised;
+  const flagged        = STUDENTS.filter(s => {
+    const ev = EVALS[s.id]||{}; const ai=ev.AI||{}; const fac=ev.FACULTY||{};
+    const aT=ai.total??null; const fT=fac.total??null;
+    if (aT===null||fT===null) return false;
+    return Math.abs(aT-fT)/Math.max(aT,1)*100 > 15;
+  }).length;
+
   mc.innerHTML = `
     <div class="hod-view">
-      <div class="page-title">Moderation Dashboard</div>
-      <div class="page-sub">Review all three evaluations and commit the final grade for each student.</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+        <div>
+          <div class="page-title">Moderation Dashboard</div>
+          <div class="page-sub">Review tri-phase evaluations and commit the final grade for each student.</div>
+        </div>
+        <button onclick="exportAllResults()" style="padding:9px 16px;background:var(--green);color:white;border:none;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap;box-shadow:0 2px 8px rgba(21,128,61,0.2)">
+          ⬇ Export All Results
+        </button>
+      </div>
+
+      <!-- Stats row -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px">
+        ${[
+          {label:'Total Students', val:totalStudents, color:'var(--blue)',   bg:'var(--blue-lt)'},
+          {label:'Finalised',      val:finalised,     color:'var(--green)',  bg:'var(--green-lt)'},
+          {label:'Pending',        val:pending,       color:'var(--amber)',  bg:'var(--amber-lt)'},
+          {label:'Flagged (>15%)', val:flagged,       color:'var(--red)',    bg:'var(--red-lt)'},
+        ].map(s=>`
+          <div style="background:${s.bg};border:1px solid ${s.color}33;border-radius:var(--r-lg);padding:14px;text-align:center">
+            <div style="font-size:26px;font-family:'JetBrains Mono',monospace;font-weight:700;color:${s.color}">${s.val}</div>
+            <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:${s.color};margin-top:3px">${s.label}</div>
+          </div>`).join('')}
+      </div>
+
       <div id="cmp-list"></div>
     </div>`;
   renderCmps();
@@ -1294,7 +2020,8 @@ function renderCmps() {
 </div></div>
       </div>
       <div class="commit-row">
-        ${fin ? `<button class="btn-commit bc-done">✓ Committed — ${fin.from} (${fin.total})</button>` : `
+        ${fin ? `<button class="btn-commit bc-done">✓ Committed — ${fin.from} (${fin.total})</button>
+                 <button class="btn-commit" style="border-color:var(--blue-border);color:var(--blue);background:var(--blue-lt)" onclick="exportStudentReport('${s.id}')">📄 Print Report</button>` : `
           ${aT!==null?`<button class="btn-commit bc-ai" onclick="commitMarks('${s.id}','AI',${aT})">Commit AI (${aT})</button>`:''}
           ${fT!==null?`<button class="btn-commit bc-fac" onclick="commitMarks('${s.id}','FACULTY',${fT})">Commit Faculty (${fT})</button>`:''}
           ${sT!==null?`<button class="btn-commit bc-stu" onclick="commitMarks('${s.id}','STUDENT',${sT})">Commit Student (${sT})</button>`:''}
@@ -1311,8 +2038,11 @@ async function commitMarks(sid, from, total) {
       body:JSON.stringify({student_id:sid,selected_evaluator:from,moderator:currentUser})});
   } catch {}
   FINALIZED[sid] = {from, total};
+  saveSession();
+  const stuName = STUDENTS.find(s=>s.id===sid)?.name || sid;
+  addNotif(`Final marks committed for ${stuName}: ${total}/10 (${from})`, 'info');
   toast(`✓ Committed ${from} marks (${total}) for ${sid}`, 'ok');
-  renderCmps();
+  renderHodView();
 }
 function moderateMarks(sid) {
   const val = prompt(`Enter moderated marks for ${sid} (0–10):`);
@@ -1329,56 +2059,66 @@ function renderUploadView() {
   const mc = document.getElementById('main-content');
   mc.innerHTML = `
     <div class="upload-view">
-      <div class="page-title">Upload Exam Session</div>
-      <div class="page-sub">Upload the three PDFs to begin the tri-phase evaluation pipeline.</div>
+      <div class="page-title">Upload Single Session</div>
+      <div class="page-sub">Upload one student's documents manually. For multiple students at once, use the Bulk Upload tab.</div>
 
       <div class="viewer-tip">
-        <strong>📄 PDF Viewer:</strong> After uploading, switch to the <strong>Evaluation tab</strong> and use the document selector in the viewer header to view any uploaded PDF directly in the browser. All three documents (Question Paper, Scheme, Answer Script) are viewable without any plugin.
+        <strong>📄 PDF Viewer:</strong> After uploading, switch to the <strong>Evaluation tab</strong> and use the document selector in the viewer header to view any uploaded PDF directly in the browser.
       </div>
 
-      <div class="sid-row">
-        <div class="field">
+      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:flex-end;margin-bottom:20px">
+        <div class="field" style="margin-bottom:0">
           <label class="field-label">Student ID</label>
-          <input class="field-input" id="up-sid" value="${currentStudent}" placeholder="STU-XXXX" style="width:180px">
+          <input class="field-input" id="up-sid" value="${currentStudent}" placeholder="e.g. STU-001">
         </div>
-        <button class="btn-green" id="up-btn" onclick="uploadSession()">Upload &amp; Start Session</button>
+        <div class="field" style="margin-bottom:0">
+          <label class="field-label">Student Name</label>
+          <input class="field-input" id="up-name" placeholder="e.g. Arjun Mehta">
+        </div>
+        <button class="btn-green" id="up-btn" onclick="uploadSession()">Upload &amp; Start</button>
       </div>
 
       <div class="upload-grid">
         ${[
-          {slot:'question-paper', icon:'📋', lbl:'Question Paper',       hint:'PDF of exam questions with OR logic'},
+          {slot:'question-paper', icon:'📋', lbl:'Question Paper',       hint:'PDF with OR-logic questions'},
           {slot:'scheme',         icon:'📐', lbl:'Scheme of Evaluation', hint:'Rubric & model answers'},
-          {slot:'answer-script',  icon:'✍️', lbl:'Answer Script',        hint:'Scanned handwritten answer PDF'},
+          {slot:'answer-script',  icon:'✍️', lbl:'Answer Script',        hint:'This student\'s scanned PDF'},
         ].map(z=>`
-          <div class="upload-zone ${pdfURLs[z.slot]?'ready':''}" id="zone-${z.slot}"
-               onclick="document.getElementById('file-${z.slot}').click()">
+          <div class="upload-zone ${getPdfUrl(currentStudent, z.slot)||GLOBAL_PDFS[z.slot]?'ready':''}"
+               id="zone-${z.slot}" onclick="document.getElementById('file-${z.slot}').click()">
             <input type="file" accept="application/pdf,image/*" class="uz-input" id="file-${z.slot}"
                    onchange="fileChosen('${z.slot}')">
             <div class="uz-icon">${z.icon}</div>
             <div class="uz-lbl">${z.lbl}</div>
             <div class="uz-hint">${z.hint}</div>
-            <div class="uz-fname" id="fname-${z.slot}">${pdfURLs[z.slot]?'✓ File loaded':'Click to select PDF'}</div>
+            <div class="uz-fname" id="fname-${z.slot}">
+              ${z.slot==='answer-script'
+                ? (getPdfUrl(currentStudent,'answer-script')?'✓ Script loaded':'Click to select PDF')
+                : (GLOBAL_PDFS[z.slot]?'✓ File loaded':'Click to select PDF')}
+            </div>
           </div>`).join('')}
       </div>
-
-      <div id="upload-preview" style="margin-top:8px"></div>
     </div>`;
 }
 
 function fileChosen(slot) {
   const f = document.getElementById(`file-${slot}`)?.files[0];
   if (!f) return;
+  const sid = document.getElementById('up-sid')?.value?.trim() || currentStudent;
 
-  /* Revoke old URL to free memory */
-  if (pdfURLs[slot]) URL.revokeObjectURL(pdfURLs[slot]);
-  pdfURLs[slot] = URL.createObjectURL(f);
+  if (slot === 'answer-script') {
+    if (!STU_PDFS[sid]) STU_PDFS[sid] = {};
+    if (STU_PDFS[sid]['answer-script']) URL.revokeObjectURL(STU_PDFS[sid]['answer-script']);
+    STU_PDFS[sid]['answer-script'] = URL.createObjectURL(f);
+  } else {
+    if (GLOBAL_PDFS[slot]) URL.revokeObjectURL(GLOBAL_PDFS[slot]);
+    GLOBAL_PDFS[slot] = URL.createObjectURL(f);
+  }
 
-  /* Update zone UI */
   const zone  = document.getElementById(`zone-${slot}`);
   const fname = document.getElementById(`fname-${slot}`);
   if (zone)  zone.classList.add('ready');
   if (fname) fname.textContent = '✓ ' + f.name;
-
   toast(`${f.name} loaded`, 'ok');
 }
 
@@ -1386,27 +2126,243 @@ async function uploadSession() {
   const sid = document.getElementById('up-sid')?.value?.trim();
   if (!sid) { toast('Enter a Student ID', 'err'); return; }
 
-  const slots = ['question-paper','scheme','answer-script'];
-  const missing = slots.filter(s => !pdfURLs[s]);
-  if (missing.length) { toast(`Please select: ${missing.join(', ')}`, 'err'); return; }
+  const hasScript = !!(STU_PDFS[sid] && STU_PDFS[sid]['answer-script']);
+  const hasQP     = !!GLOBAL_PDFS['question-paper'];
+  const hasScheme = !!GLOBAL_PDFS['scheme'];
+
+  if (!hasScript || !hasQP || !hasScheme) {
+    toast('Please select all three PDFs first', 'err'); return;
+  }
+
+  /* Add student to registry if not present */
+  if (!STUDENTS.find(s => s.id === sid)) {
+    const name = document.getElementById('up-name')?.value?.trim() || sid;
+    const uname = sid.toLowerCase().replace(/[^a-z0-9]/g,'_');
+    STUDENTS.push({ id: sid, name, status: 'pending', username: uname });
+    if (!USER_DB[uname]) {
+      USER_DB[uname] = { pw: uname + '_pass', role: 'student', name, status: 'approved' };
+      MANAGED_USERS.push({ username: uname, ...USER_DB[uname] });
+    }
+  }
+
+  EVALS[sid] = EVALS[sid] || { AI:{}, FACULTY:{}, STUDENT:{} };
 
   const btn = document.getElementById('up-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Uploading…'; }
 
-  /* Try real API */
   try {
     const fd = new FormData();
     fd.append('student_id', sid);
-    slots.forEach(s => {
+    ['question-paper','scheme','answer-script'].forEach(s => {
       const f = document.getElementById(`file-${s}`)?.files[0];
-      if (f) fd.append(s.replace('-','_'), f);
+      if (f) fd.append(s.replace(/-/g,'_'), f);
     });
-    await fetch(`${API}/upload-session`, {method:'POST', body:fd});
+    await fetch(`${API}/upload-session`, { method:'POST', body: fd });
   } catch {}
 
   currentStudent = sid;
   if (btn) { btn.disabled = false; btn.textContent = 'Upload & Start Session'; }
-  toast('✓ Session ready — switch to Evaluation tab to view PDFs', 'ok');
+  toast(`✓ Session ready for ${sid} — switch to Evaluation tab`, 'ok');
+}
+
+/* ════════════════════════════════════════
+   BULK UPLOAD
+════════════════════════════════════════ */
+
+/* Rows loaded from CSV: [{id, name, username, scriptFile, scriptURL}] */
+let bulkRows = [];
+
+function renderBulkUploadView() {
+  const mc = document.getElementById('main-content');
+  mc.innerHTML = `
+    <div class="bulk-view">
+      <div class="page-title">Bulk Upload</div>
+      <div class="page-sub">Upload student details via CSV, then attach each student's answer script PDF individually.</div>
+
+      <!-- Steps -->
+      <div class="bulk-steps">
+        <div class="bulk-step">
+          <div class="bulk-step-num">1</div>
+          <div class="bulk-step-title">Upload Shared Docs</div>
+          <div class="bulk-step-desc">Upload the Question Paper and Scheme of Evaluation once — they apply to all students.</div>
+        </div>
+        <div class="bulk-step">
+          <div class="bulk-step-num">2</div>
+          <div class="bulk-step-title">Upload Student CSV</div>
+          <div class="bulk-step-desc">CSV with columns: <code style="font-family:'JetBrains Mono',monospace;font-size:10px">student_id, student_name, username, password</code></div>
+        </div>
+        <div class="bulk-step">
+          <div class="bulk-step-num">3</div>
+          <div class="bulk-step-title">Attach Answer Scripts</div>
+          <div class="bulk-step-desc">Click the upload button on each row to attach that student's scanned answer script PDF.</div>
+        </div>
+      </div>
+
+      <!-- Shared docs row -->
+      <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;margin-bottom:20px">
+        <div class="sec-label" style="margin-bottom:12px">Shared Documents (apply to all students)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="upload-zone ${GLOBAL_PDFS['question-paper']?'ready':''}" onclick="document.getElementById('bulk-qp').click()">
+            <input type="file" accept="application/pdf" class="uz-input" id="bulk-qp" onchange="bulkGlobalFile('question-paper','bulk-qp',this)">
+            <div class="uz-icon">📋</div>
+            <div class="uz-lbl">Question Paper</div>
+            <div class="uz-fname" id="bulk-qp-name">${GLOBAL_PDFS['question-paper']?'✓ Loaded':'Click to select PDF'}</div>
+          </div>
+          <div class="upload-zone ${GLOBAL_PDFS['scheme']?'ready':''}" onclick="document.getElementById('bulk-sc').click()">
+            <input type="file" accept="application/pdf" class="uz-input" id="bulk-sc" onchange="bulkGlobalFile('scheme','bulk-sc',this)">
+            <div class="uz-icon">📐</div>
+            <div class="uz-lbl">Scheme of Evaluation</div>
+            <div class="uz-fname" id="bulk-sc-name">${GLOBAL_PDFS['scheme']?'✓ Loaded':'Click to select PDF'}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CSV Upload -->
+      <span class="template-link" onclick="downloadCSVTemplate()">⬇ Download CSV Template</span>
+      <div class="csv-zone ${bulkRows.length?'ready':''}" id="csv-zone" onclick="document.getElementById('csv-input').click()">
+        <input type="file" accept=".csv,.txt" class="bulk-input" id="csv-input" onchange="parseCSV(this)">
+        <div style="font-size:28px">${bulkRows.length?'✅':'📊'}</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">${bulkRows.length?`${bulkRows.length} students loaded`:'Click to Upload Student CSV'}</div>
+        <div style="font-size:11px;color:var(--text3)">student_id, student_name, username, password</div>
+      </div>
+
+      <!-- Student table -->
+      ${bulkRows.length ? renderBulkTable() : ''}
+
+      <!-- Commit button -->
+      ${bulkRows.length ? `
+        <div style="display:flex;align-items:center;gap:14px;margin-top:4px">
+          <button class="btn-commit-all" onclick="commitBulkUpload()">✓ Register All Students &amp; Save</button>
+          <span style="font-size:11px;color:var(--text3)">${bulkRows.filter(r=>r.scriptURL).length} of ${bulkRows.length} scripts uploaded</span>
+        </div>` : ''}
+    </div>`;
+}
+
+function renderBulkTable() {
+  return `
+    <table class="bulk-table">
+      <thead>
+        <tr>
+          <th>Student ID</th>
+          <th>Name</th>
+          <th>Username</th>
+          <th>Password</th>
+          <th>Answer Script</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${bulkRows.map((r,i) => `
+          <tr>
+            <td><span style="font-family:'JetBrains Mono',monospace;font-size:11px">${r.id}</span></td>
+            <td>${r.name}</td>
+            <td><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2)">${r.username}</span></td>
+            <td><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3)">${r.password}</span></td>
+            <td>
+              <label class="bulk-upload-btn ${r.scriptURL?'done':''}" for="script-${i}">
+                ${r.scriptURL ? '✓ '+r.scriptFile : '📎 Attach PDF'}
+              </label>
+              <input type="file" accept="application/pdf,image/*" class="bulk-input"
+                id="script-${i}" onchange="attachScript(${i},this)">
+            </td>
+            <td>
+              <span class="badge ${r.scriptURL?'badge-approved':'badge-pending'}">
+                ${r.scriptURL?'READY':'PENDING'}
+              </span>
+            </td>
+          </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+function bulkGlobalFile(slot, inputId, el) {
+  const f = el.files[0]; if (!f) return;
+  if (GLOBAL_PDFS[slot]) URL.revokeObjectURL(GLOBAL_PDFS[slot]);
+  GLOBAL_PDFS[slot] = URL.createObjectURL(f);
+  const nameEl = document.getElementById(`${inputId}-name`);
+  const zone   = el.closest('.upload-zone');
+  if (nameEl) nameEl.textContent = '✓ ' + f.name;
+  if (zone) zone.classList.add('ready');
+  toast(`${f.name} loaded`, 'ok');
+}
+
+function parseCSV(input) {
+  const f = input.files[0]; if (!f) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const lines = e.target.result.trim().split('\n');
+    const rows = [];
+    /* Skip header row */
+    for (let i = 1; i < lines.length; i++) {
+      const cols = lines[i].split(',').map(c => c.trim().replace(/^"|"$/g,''));
+      if (cols.length < 2) continue;
+      rows.push({
+        id:       cols[0] || `STU-${String(i).padStart(3,'0')}`,
+        name:     cols[1] || `Student ${i}`,
+        username: cols[2] || cols[0].toLowerCase().replace(/[^a-z0-9]/g,'_'),
+        password: cols[3] || 'changeme123',
+        scriptFile: null,
+        scriptURL:  null,
+      });
+    }
+    bulkRows = rows;
+    toast(`✓ ${rows.length} students loaded from CSV`, 'ok');
+    renderBulkUploadView();
+  };
+  reader.readAsText(f);
+}
+
+function attachScript(idx, input) {
+  const f = input.files[0]; if (!f) return;
+  if (bulkRows[idx].scriptURL) URL.revokeObjectURL(bulkRows[idx].scriptURL);
+  bulkRows[idx].scriptFile = f.name;
+  bulkRows[idx].scriptURL  = URL.createObjectURL(f);
+
+  /* Store in per-student PDF store immediately */
+  const sid = bulkRows[idx].id;
+  if (!STU_PDFS[sid]) STU_PDFS[sid] = {};
+  STU_PDFS[sid]['answer-script'] = bulkRows[idx].scriptURL;
+
+  toast(`✓ Script attached for ${bulkRows[idx].name}`, 'ok');
+  renderBulkUploadView();
+}
+
+function commitBulkUpload() {
+  let added = 0;
+  bulkRows.forEach(r => {
+    /* Register in STUDENTS list */
+    if (!STUDENTS.find(s => s.id === r.id)) {
+      STUDENTS.push({ id: r.id, name: r.name, status: 'pending', username: r.username });
+      added++;
+    } else {
+      /* Update name if already exists */
+      const s = STUDENTS.find(s => s.id === r.id);
+      s.name = r.name; s.username = r.username;
+    }
+    /* Register in USER_DB */
+    USER_DB[r.username] = { pw: r.password, role: 'student', name: r.name, status: 'approved' };
+    if (!MANAGED_USERS.find(u => u.username === r.username)) {
+      MANAGED_USERS.push({ username: r.username, ...USER_DB[r.username] });
+    }
+    /* Init eval record */
+    EVALS[r.id] = EVALS[r.id] || { AI:{}, FACULTY:{}, STUDENT:{} };
+  });
+
+  const withScripts = bulkRows.filter(r => r.scriptURL).length;
+  toast(`✅ ${bulkRows.length} students registered, ${withScripts} scripts ready`, 'ok');
+  bulkRows = [];
+  renderBulkUploadView();
+}
+
+function downloadCSVTemplate() {
+  const csv = `student_id,student_name,username,password\nSTU-001,Arjun Mehta,arjun_mehta,pass001\nSTU-002,Priya Nair,priya_nair,pass002\nSTU-003,Rahul Singh,rahul_singh,pass003`;
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'students_template.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('CSV template downloaded', 'ok');
 }
 
 /* ════════════════════════════════════════
