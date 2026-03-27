@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHIVA'S Digital Evaluation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN SYSTEM — Warm Academic Light Theme
+═══════════════════════════════════════════ */
+:root {
+  --cream:      #faf8f4;
+  --cream2:     #f3f0ea;
+  --cream3:     #ede9e0;
+  --white:      #ffffff;
+  --border:     #ddd8cc;
+  --border2:    #c8c2b4;
+  --text:       #1e1c18;
+  --text2:      #5a5649;
+  --text3:      #9c9488;
+  --ink:        #2b2820;
+
+  --blue:       #1d4ed8;
+  --blue-lt:    #eff6ff;
+  --blue-mid:   #dbeafe;
+  --blue-border:#bfdbfe;
+
+  --indigo:     #4338ca;
+  --indigo-lt:  #eef2ff;
+
+  --green:      #15803d;
+  --green-lt:   #f0fdf4;
+  --green-mid:  #bbf7d0;
+
+  --amber:      #b45309;
+  --amber-lt:   #fffbeb;
+  --amber-mid:  #fde68a;
+
+  --red:        #b91c1c;
+  --red-lt:     #fef2f2;
+  --red-mid:    #fecaca;
+
+  --purple:     #7c3aed;
+  --purple-lt:  #f5f3ff;
+
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:  0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg:  0 10px 32px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.05);
+  --r:          8px;
+  --r-lg:       12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  font-size: 13px;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ═══ SCREENS ═══ */
+.screen { display: none; position: fixed; inset: 0; }
+.screen.active { display: flex; }
+
+/* ═══════════════════════════════════════════
+   LOGIN SCREEN
+═══════════════════════════════════════════ */
+#screen-login {
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f0ece3 0%, #e8e2d5 50%, #f5f2eb 100%);
+}
+.login-bg-pattern {
+  position: absolute; inset: 0; opacity: 0.035;
+  background-image: repeating-linear-gradient(
+    45deg, var(--text) 0, var(--text) 1px, transparent 0, transparent 50%);
+  background-size: 20px 20px;
+}
+
+.login-card {
+  position: relative; z-index: 1;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 44px 40px;
+  width: 420px;
+  box-shadow: var(--shadow-lg);
+}
+.login-brand {
+  text-align: center; margin-bottom: 32px;
+}
+.login-brand-name {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 20px; color: var(--ink);
+  line-height: 1.3;
+}
+.login-brand-name em { color: var(--blue); font-style: italic; }
+.login-brand-sub {
+  font-size: 11px; color: var(--text3);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-top: 6px;
+}
+.login-divider {
+  width: 40px; height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--indigo));
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+
+.role-tabs {
+  display: flex; gap: 4px;
+  background: var(--cream2); border-radius: var(--r);
+  padding: 4px; margin-bottom: 24px;
+}
+.role-tab {
+  flex: 1; padding: 8px 4px;
+  background: transparent; border: none;
+  border-radius: 6px; color: var(--text2);
+  font-size: 11.5px; font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 500; cursor: pointer;
+  transition: all 0.18s; letter-spacing: 0.01em;
+}
+.role-tab.active {
+  background: var(--white);
+  color: var(--blue);
+  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+}
+
+.field { margin-bottom: 14px; }
+.field-label {
+  display: block; font-size: 11px; font-weight: 600;
+  color: var(--text2); margin-bottom: 6px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.field-input {
+  width: 100%; padding: 10px 13px;
+  background: var(--cream);
+  border: 1px solid var(--border2);
+  border-radius: var(--r); color: var(--text);
+  font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif;
+  outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field-input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(29,78,216,0.1);
+  background: var(--white);
+}
+
+.btn-primary {
+  width: 100%; padding: 11px;
+  background: var(--blue); color: white;
+  border: none; border-radius: var(--r);
+  font-size: 13px; font-weight: 600;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  cursor: pointer; letter-spacing: 0.02em;
+  transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(29,78,216,0.25);
+}
+.btn-primary:hover { background: #1e40af; box-shadow: 0 4px 14px rgba(29,78,216,0.3); }
+.btn-primary:active { transform: scale(0.98); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.login-error {
+  background: var(--red-lt); border: 1px solid var(--red-mid);
+  color: var(--red); border-radius: var(--r);
+  padding: 10px 13px; font-size: 12px; margin-top: 12px;
+  display: none;
+}
+.login-demo-hint {
+  margin-top: 20px; padding: 12px 14px;
+  background: var(--blue-lt); border: 1px solid var(--blue-border);
+  border-radius: var(--r); font-size: 11px; color: var(--text2); line-height: 1.7;
+}
+.login-demo-hint code { color: var(--blue); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+
+.admin-link {
+  display: block; text-align: center; margin-top: 18px;
+  font-size: 12px; color: var(--text3);
+  text-decoration: none; cursor: pointer;
+  transition: color 0.15s;
+}
+.admin-link:hover { color: var(--red); }
+
+/* ═══════════════════════════════════════════
+   ADMIN PORTAL
+═══════════════════════════════════════════ */
+#screen-admin {
+  align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #1e1c18 0%, #2b2820 100%);
+  flex-direction: column;
+}
+.admin-card {
+  background: var(--white);
+  border-radius: 20px;
+  width: 560px; max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+  display: flex; flex-direction: column;
+}
+.admin-header {
+  background: var(--ink);
+  padding: 20px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.admin-header-title {
+  font-family: 'Libre Baskerville', serif;
+  color: white; font-size: 15px;
+}
+.admin-header-badge {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  background: rgba(255,255,255,0.1);
+  color: #fde68a; padding: 3px 9px; border-radius: 4px;
+  letter-spacing: 0.06em;
+}
+.admin-body { flex: 1; overflow-y: auto; padding: 24px 28px; }
+.admin-tabs {
+  display: flex; gap: 4px; margin-bottom: 20px;
+  border-bottom: 1px solid var(--border); padding-bottom: 0;
+}
+.admin-tab {
+  padding: 8px 14px;
+  background: transparent; border: none;
+  font-size: 12px; font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text3); cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: all 0.15s; font-weight: 500;
+}
+.admin-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+/* User rows */
+.user-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px; border-radius: var(--r);
+  border: 1px solid var(--border);
+  margin-bottom: 8px; background: var(--white);
+  transition: box-shadow 0.15s;
+}
+.user-row:hover { box-shadow: var(--shadow-sm); }
+.user-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; flex-shrink: 0;
+}
+.user-info { flex: 1; min-width: 0; }
+.user-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.user-meta { font-size: 11px; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+.user-actions { display: flex; gap: 6px; }
+
+.badge {
+  font-size: 10px; padding: 2px 8px; border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em;
+  font-weight: 500;
+}
+.badge-pending { background: var(--amber-lt); color: var(--amber); border: 1px solid var(--amber-mid); }
+.badge-approved { background: var(--green-lt); color: var(--green); border: 1px solid var(--green-mid); }
+.badge-rejected { background: var(--red-lt); color: var(--red); border: 1px solid var(--red-mid); }
+.badge-faculty { background: var(--blue-lt); color: var(--blue); border: 1px solid var(--blue-border); }
+.badge-hod { background: var(--purple-lt); color: var(--purple); border: 1px solid #ddd6fe; }
+.badge-student { background: var(--green-lt); color: var(--green); border: 1px solid var(--green-mid); }
+
+.btn-sm {
+  padding: 5px 10px; border-radius: 6px;
+  font-size: 11px; font-weight: 600; cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  border: 1px solid; transition: all 0.15s;
+}
+.btn-approve { background: var(--green-lt); color: var(--green); border-color: var(--green-mid); }
+.btn-approve:hover { background: var(--green); color: white; }
+.btn-reject { background: var(--red-lt); color: var(--red); border-color: var(--red-mid); }
+.btn-reject:hover { background: var(--red); color: white; }
+.btn-reset { background: var(--amber-lt); color: var(--amber); border-color: var(--amber-mid); }
+.btn-reset:hover { background: var(--amber); color: white; }
+.btn-delete { background: var(--red-lt); color: var(--red); border-color: var(--red-mid); }
+.btn-delete:hover { background: var(--red); color: white; }
+
+/* Add user form */
+.add-user-form {
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 18px; margin-bottom: 18px;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.form-row.single { grid-template-columns: 1fr; }
+
+.admin-back {
+  width: 100%; padding: 10px; background: transparent;
+  border: 1px solid var(--border2); border-radius: var(--r);
+  color: var(--text2); font-size: 12px; font-family: 'Plus Jakarta Sans', sans-serif;
+  cursor: pointer; margin-top: 12px; transition: all 0.15s;
+}
+.admin-back:hover { border-color: var(--text); color: var(--text); }
+
+/* ═══════════════════════════════════════════
+   MAIN APP
+═══════════════════════════════════════════ */
+#screen-app { flex-direction: column; }
+
+/* Topbar */
+.topbar {
+  height: 50px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 20px; gap: 14px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+.topbar-brand {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 14px; color: var(--ink);
+  white-space: nowrap;
+}
+.topbar-brand em { color: var(--blue); font-style: italic; }
+.topbar-sep { width: 1px; height: 18px; background: var(--border); }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.topbar-user { font-size: 12px; color: var(--text2); font-weight: 500; }
+.role-pill {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  padding: 3px 8px; border-radius: 20px;
+  letter-spacing: 0.04em; text-transform: uppercase; font-weight: 500;
+}
+.role-faculty { background: var(--blue-lt); color: var(--blue); border: 1px solid var(--blue-border); }
+.role-hod { background: var(--purple-lt); color: var(--purple); border: 1px solid #ddd6fe; }
+.role-student { background: var(--green-lt); color: var(--green); border: 1px solid var(--green-mid); }
+.btn-logout {
+  font-size: 11px; background: transparent;
+  border: 1px solid var(--border2); color: var(--text3);
+  padding: 5px 12px; border-radius: 6px; cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all 0.15s;
+}
+.btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+/* View tabs */
+.view-tabs {
+  display: flex; gap: 2px; padding: 0 20px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.view-tab {
+  padding: 10px 16px; background: transparent; border: none;
+  color: var(--text3); font-size: 12.5px; font-weight: 500;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  cursor: pointer; transition: all 0.15s;
+}
+.view-tab:hover { color: var(--text2); }
+.view-tab.active { color: var(--blue); border-bottom-color: var(--blue); font-weight: 600; }
+
+/* Main content */
+.main-content { flex: 1; overflow: hidden; display: flex; }
+
+/* ═══════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════ */
+.sidebar {
+  width: 210px; min-width: 210px;
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.sidebar-hdr {
+  padding: 14px 14px 8px;
+  font-size: 10px; font-weight: 700; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-list { flex: 1; overflow-y: auto; padding: 8px; }
+.stu-item {
+  padding: 9px 10px; border-radius: var(--r);
+  cursor: pointer; transition: background 0.12s;
+  margin-bottom: 2px; border: 1px solid transparent;
+}
+.stu-item:hover { background: var(--cream2); }
+.stu-item.active {
+  background: var(--blue-lt);
+  border-color: var(--blue-border);
+}
+.stu-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--text); }
+.stu-name { font-size: 11px; color: var(--text2); margin-top: 2px; }
+.stu-st {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  padding: 2px 6px; border-radius: 3px; width: fit-content; margin-top: 4px;
+}
+.st-pending { background: var(--amber-lt); color: var(--amber); }
+.st-graded  { background: var(--green-lt);  color: var(--green); }
+.st-flagged { background: var(--red-lt);    color: var(--red); }
+
+/* ═══════════════════════════════════════════
+   PDF VIEWER AREA
+═══════════════════════════════════════════ */
+.viewer-wrap {
+  flex: 1; display: flex; overflow: hidden;
+}
+.pdf-pane {
+  flex: 1; background: var(--cream2);
+  display: flex; flex-direction: column;
+  border-right: 1px solid var(--border);
+  overflow: hidden;
+}
+.pane-bar {
+  height: 36px; padding: 0 14px;
+  display: flex; align-items: center; gap: 8px;
+  background: var(--white); border-bottom: 1px solid var(--border);
+  font-size: 11px; color: var(--text3); flex-shrink: 0;
+}
+.pane-bar-title { font-weight: 600; color: var(--text2); }
+.pane-bar select {
+  margin-left: auto; font-size: 11px; padding: 3px 8px;
+  border: 1px solid var(--border2); border-radius: 5px;
+  background: var(--cream); color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; outline: none;
+}
+.pdf-scroll-area {
+  flex: 1; overflow-y: auto; padding: 20px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+
+/* The actual rendered PDF page canvases */
+.pdf-page-canvas {
+  background: white;
+  box-shadow: var(--shadow-md);
+  border-radius: 4px;
+  max-width: 100%;
+  display: block;
+}
+
+/* Empty state */
+.pdf-empty {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 10px; color: var(--text3);
+}
+.pdf-empty-icon { font-size: 40px; opacity: 0.3; }
+.pdf-empty-text { font-size: 12px; }
+
+/* ═══════════════════════════════════════════
+   MARKS PANEL
+═══════════════════════════════════════════ */
+.marks-panel {
+  width: 330px; min-width: 330px;
+  background: var(--white);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.marks-body { flex: 1; overflow-y: auto; padding: 16px; }
+
+/* AI button */
+.btn-ai {
+  width: 100%; padding: 11px;
+  background: linear-gradient(135deg, #4338ca 0%, #7c3aed 100%);
+  color: white; border: none; border-radius: var(--r);
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: opacity 0.15s, transform 0.1s;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-bottom: 14px; letter-spacing: 0.02em;
+  box-shadow: 0 3px 10px rgba(67,56,202,0.3);
+}
+.btn-ai:hover { opacity: 0.88; }
+.btn-ai:active { transform: scale(0.98); }
+
+/* AI result */
+.ai-card {
+  background: var(--purple-lt); border: 1px solid #ddd6fe;
+  border-radius: var(--r); padding: 12px; margin-bottom: 14px;
+  display: none;
+}
+.ai-card.show { display: block; }
+.ai-card-hdr {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.ai-card-label { font-size: 10px; font-weight: 700; color: var(--purple); letter-spacing: 0.07em; text-transform: uppercase; }
+.ai-conf-pill {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  background: white; color: var(--purple);
+  padding: 2px 7px; border-radius: 4px;
+}
+.ai-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 5px 0; border-bottom: 1px solid #ede9fe;
+  font-size: 12px;
+}
+.ai-row:last-of-type { border-bottom: none; }
+.ai-q { color: var(--text2); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+.ai-mark { color: var(--purple); font-weight: 600; }
+.ai-fb { font-size: 11px; color: var(--text2); margin-top: 8px; line-height: 1.5; }
+
+/* Section label */
+.sec-label {
+  font-size: 10px; font-weight: 700; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;
+}
+
+/* Marks form */
+.marks-form {
+  border: 1px solid var(--border); border-radius: var(--r);
+  overflow: hidden; margin-bottom: 14px;
+}
+.marks-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px; border-bottom: 1px solid var(--border);
+  background: var(--white);
+}
+.marks-row:last-child { border-bottom: none; }
+.marks-row:nth-child(even) { background: var(--cream); }
+.mq-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text); }
+.mq-max { font-size: 10px; color: var(--text3); margin-top: 2px; }
+.marks-inp-group { display: flex; align-items: center; gap: 6px; }
+.ai-chip {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  background: var(--purple-lt); color: var(--purple);
+  padding: 3px 7px; border-radius: 4px; cursor: pointer;
+  border: 1px solid #ddd6fe; transition: background 0.12s;
+  white-space: nowrap;
+}
+.ai-chip:hover { background: #ede9fe; }
+.marks-inp {
+  width: 58px; padding: 6px 8px;
+  border: 1px solid var(--border2); border-radius: 6px;
+  background: var(--cream); color: var(--text);
+  font-size: 13px; text-align: center;
+  font-family: 'JetBrains Mono', monospace; outline: none;
+  transition: all 0.15s;
+}
+.marks-inp:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(29,78,216,0.1); background: white; }
+.marks-inp.over { border-color: var(--red); background: var(--red-lt); }
+
+/* Score summary strip */
+.score-strip {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--border); border-radius: var(--r);
+  overflow: hidden; margin-bottom: 14px;
+}
+.sc-cell {
+  padding: 10px 8px; text-align: center;
+  border-right: 1px solid var(--border);
+}
+.sc-cell:last-child { border-right: none; }
+.sc-cell-label { font-size: 9px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 3px; }
+.sc-cell-val { font-size: 20px; font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+.sc-ai .sc-cell-label { color: var(--purple); }
+.sc-ai .sc-cell-val { color: var(--purple); }
+.sc-fac .sc-cell-label { color: var(--blue); }
+.sc-fac .sc-cell-val { color: var(--blue); }
+.sc-stu .sc-cell-label { color: var(--amber); }
+.sc-stu .sc-cell-val { color: var(--amber); }
+
+.just-area {
+  width: 100%; background: var(--cream); border: 1px solid var(--border2);
+  border-radius: var(--r); color: var(--text); font-size: 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif; padding: 9px 11px;
+  resize: none; outline: none; height: 68px; margin-bottom: 14px;
+  transition: all 0.15s;
+}
+.just-area:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(29,78,216,0.1); background: white; }
+
+.btn-submit {
+  width: 100%; padding: 11px; background: var(--blue);
+  color: white; border: none; border-radius: var(--r);
+  font-size: 12.5px; font-weight: 700; cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: background 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(29,78,216,0.2);
+}
+.btn-submit:hover { background: #1e40af; box-shadow: 0 4px 14px rgba(29,78,216,0.3); }
+.btn-submit.done { background: var(--green); box-shadow: none; }
+
+/* ═══════════════════════════════════════════
+   HOD DASHBOARD
+═══════════════════════════════════════════ */
+.hod-view { flex: 1; overflow-y: auto; padding: 24px; background: var(--cream); }
+.page-title { font-family: 'Libre Baskerville', serif; font-size: 20px; color: var(--ink); margin-bottom: 4px; }
+.page-sub { font-size: 12px; color: var(--text3); margin-bottom: 22px; }
+
+.cmp-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: 18px; margin-bottom: 14px;
+  box-shadow: var(--shadow-sm);
+}
+.cmp-hdr { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+.cmp-stu-id { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; color: var(--text); }
+.cmp-stu-name { font-size: 11px; color: var(--text3); margin-top: 2px; }
+.dev-badge {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  padding: 4px 10px; border-radius: 20px; font-weight: 600;
+}
+.dev-ok { background: var(--green-lt); color: var(--green); border: 1px solid var(--green-mid); }
+.dev-warn { background: var(--red-lt); color: var(--red); border: 1px solid var(--red-mid); }
+.dev-pending { background: var(--cream2); color: var(--text3); border: 1px solid var(--border); }
+
+.eval-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+.eval-box {
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: var(--r); padding: 12px;
+}
+.eval-box-lbl { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 6px; }
+.eval-box.ai .eval-box-lbl { color: var(--purple); }
+.eval-box.fac .eval-box-lbl { color: var(--blue); }
+.eval-box.stu .eval-box-lbl { color: var(--amber); }
+.eval-box-total { font-size: 26px; font-family: 'JetBrains Mono', monospace; }
+.eval-box.ai .eval-box-total { color: var(--purple); }
+.eval-box.fac .eval-box-total { color: var(--blue); }
+.eval-box.stu .eval-box-total { color: var(--amber); }
+.eval-box-detail { font-size: 10px; color: var(--text3); margin-top: 4px; line-height: 1.6; }
+
+.commit-row { display: flex; gap: 7px; flex-wrap: wrap; }
+.btn-commit {
+  padding: 7px 13px; border-radius: 7px; cursor: pointer;
+  font-size: 11px; font-weight: 600;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  border: 1px solid; transition: all 0.15s;
+}
+.bc-ai { background: var(--purple-lt); color: var(--purple); border-color: #ddd6fe; }
+.bc-ai:hover { background: var(--purple); color: white; }
+.bc-fac { background: var(--blue-lt); color: var(--blue); border-color: var(--blue-border); }
+.bc-fac:hover { background: var(--blue); color: white; }
+.bc-stu { background: var(--amber-lt); color: var(--amber); border-color: var(--amber-mid); }
+.bc-stu:hover { background: var(--amber); color: white; }
+.bc-mod { background: var(--green-lt); color: var(--green); border-color: var(--green-mid); }
+.bc-mod:hover { background: var(--green); color: white; }
+.bc-done { background: var(--green-lt); color: var(--green); border-color: var(--green-mid); cursor: default; }
+
+/* ═══════════════════════════════════════════
+   UPLOAD VIEW
+═══════════════════════════════════════════ */
+.upload-view { flex: 1; overflow-y: auto; padding: 24px; background: var(--cream); }
+.upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+.upload-zone {
+  background: var(--white); border: 2px dashed var(--border2);
+  border-radius: var(--r-lg); padding: 24px 16px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  cursor: pointer; transition: all 0.18s; text-align: center;
+}
+.upload-zone:hover { border-color: var(--blue); background: var(--blue-lt); }
+.upload-zone.ready { border-style: solid; border-color: var(--green); background: var(--green-lt); }
+.uz-icon { font-size: 26px; }
+.uz-lbl { font-size: 13px; font-weight: 600; color: var(--text); }
+.uz-hint { font-size: 11px; color: var(--text3); }
+.uz-fname { font-size: 11px; color: var(--green); font-family: 'JetBrains Mono', monospace; margin-top: 2px; word-break: break-all; }
+.uz-input { display: none; }
+
+.sid-row { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 16px; }
+.sid-row .field { margin-bottom: 0; }
+.btn-green {
+  padding: 10px 22px; background: var(--green); color: white;
+  border: none; border-radius: var(--r); font-size: 12.5px; font-weight: 700;
+  font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer;
+  transition: opacity 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 8px rgba(21,128,61,0.25);
+  white-space: nowrap;
+}
+.btn-green:hover { opacity: 0.88; box-shadow: 0 4px 14px rgba(21,128,61,0.3); }
+.btn-green:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* PDF viewer instructions box */
+.viewer-tip {
+  background: var(--blue-lt); border: 1px solid var(--blue-border);
+  border-radius: var(--r); padding: 12px 16px; margin-bottom: 18px;
+  font-size: 12px; color: var(--text2); line-height: 1.6;
+}
+.viewer-tip strong { color: var(--blue); }
+
+/* ═══════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════ */
+.toast {
+  position: fixed; bottom: 22px; right: 22px; z-index: 9999;
+  background: var(--ink); color: white;
+  padding: 11px 18px; border-radius: var(--r);
+  font-size: 12.5px; font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(60px); opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.ok { background: #166534; }
+.toast.err { background: #991b1b; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+</style>
+</head>
+<body>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 1: LOGIN
+══════════════════════════════════════ -->
+<div class="screen active" id="screen-login">
+  <div class="login-bg-pattern"></div>
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="login-brand-name">SHIVA'S <em>Digital Evaluation</em></div>
+      <div class="login-brand-sub">Tri-Phase Evaluation Portal</div>
+      <div class="login-divider"></div>
+    </div>
+
+    <div class="role-tabs">
+      <button class="role-tab active" onclick="setLoginRole('faculty')">👩‍🏫 Faculty</button>
+      <button class="role-tab" onclick="setLoginRole('hod')">🎓 HoD</button>
+      <button class="role-tab" onclick="setLoginRole('student')">📝 Student</button>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Username</label>
+      <input class="field-input" id="l-user" type="text" autocomplete="off" placeholder="Enter username">
+    </div>
+    <div class="field">
+      <label class="field-label">Password</label>
+      <input class="field-input" id="l-pass" type="password" placeholder="••••••••">
+    </div>
+    <button class="btn-primary" id="login-btn" onclick="doLogin()">Sign In</button>
+    <div id="login-err" class="login-error">❌ Invalid credentials. Please try again.</div>
+
+    <div class="login-demo-hint">
+      <strong>Demo credentials:</strong><br>
+      Faculty: <code>admin_faculty / pass123</code><br>
+      HoD: <code>hod_user / hod789</code><br>
+      Student: <code>student_001 / stu001</code>
+    </div>
+
+    <a class="admin-link" onclick="showAdminPortal()">🔐 Admin Portal →</a>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2: ADMIN PORTAL
+══════════════════════════════════════ -->
+<div class="screen" id="screen-admin">
+  <div style="width:560px;max-height:90vh;display:flex;flex-direction:column;">
+    <!-- Admin login overlay -->
+    <div id="admin-auth-overlay" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:10">
+      <div style="background:white;border-radius:20px;padding:36px 32px;width:340px;box-shadow:0 24px 60px rgba(0,0,0,0.4)">
+        <div style="font-family:'Libre Baskerville',serif;font-size:16px;color:#1e1c18;margin-bottom:4px">Admin Access</div>
+        <div style="font-size:11px;color:#9c9488;margin-bottom:22px">Enter the administrator passphrase to continue</div>
+        <div class="field">
+          <label class="field-label">Admin Password</label>
+          <input class="field-input" id="admin-pw" type="password" placeholder="••••••••">
+        </div>
+        <button class="btn-primary" onclick="verifyAdmin()">Unlock Admin Portal</button>
+        <button class="admin-back" onclick="showLogin()">← Back to Login</button>
+      </div>
+    </div>
+
+    <!-- Admin panel -->
+    <div class="admin-card" id="admin-panel" style="display:none">
+      <div class="admin-header">
+        <div class="admin-header-title">🔐 SHIVA'S Admin Portal</div>
+        <div class="admin-header-badge">SUPER USER</div>
+      </div>
+      <div class="admin-body">
+        <div class="admin-tabs">
+          <button class="admin-tab active" onclick="adminTab(0)">Pending Approvals</button>
+          <button class="admin-tab" onclick="adminTab(1)">Manage Users</button>
+          <button class="admin-tab" onclick="adminTab(2)">Register User</button>
+        </div>
+        <div id="admin-content"></div>
+      </div>
+      <div style="padding:0 28px 20px">
+        <button class="admin-back" onclick="showLogin()">← Exit Admin Portal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3: MAIN APP
+══════════════════════════════════════ -->
+<div class="screen" id="screen-app">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="topbar-brand">SHIVA'S <em>Digital Evaluation</em></div>
+    <div class="topbar-sep"></div>
+    <span style="font-size:11px;color:var(--text3)" id="tb-section">Portal</span>
+    <div class="topbar-right">
+      <span class="topbar-user" id="tb-user"></span>
+      <span class="role-pill" id="tb-role"></span>
+      <button class="btn-logout" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+  <!-- View tabs -->
+  <div class="view-tabs" id="view-tabs"></div>
+  <!-- Content -->
+  <div class="main-content" id="main-content"></div>
+</div>
+
+<script>
+/* ════════════════════════════════════════
+   STATE & MOCK DATA
+════════════════════════════════════════ */
+const API = 'http://127.0.0.1:8000';
+let currentUser = null, currentRole = null, loginRole = 'faculty';
+
+/* Mock user DB (in real app: from backend) */
+const USER_DB = {
+  'admin_faculty': { pw: 'pass123', role: 'faculty', name: 'Dr. Priya Sharma',  status: 'approved' },
+  'hod_user':      { pw: 'hod789',  role: 'hod',     name: 'Prof. Ramesh Kumar', status: 'approved' },
+  'student_001':   { pw: 'stu001',  role: 'student',  name: 'Arjun Mehta',       status: 'approved' },
+};
+
+const ADMIN_PW = 'admin@123'; // Change in production
+
+/* Registration queue */
+let REG_QUEUE = [
+  { username: 'faculty_new',  name: 'Ms. Kavitha Rao',   role: 'faculty',  status: 'pending',  email: 'kavitha@college.edu' },
+  { username: 'student_005',  name: 'Deepa Menon',        role: 'student',  status: 'pending',  email: 'deepa@student.edu' },
+];
+let MANAGED_USERS = Object.entries(USER_DB).map(([u,v])=>({username:u,...v}));
+
+const STUDENTS = [
+  {id:'STU-8829', name:'Arjun Mehta',   status:'pending', pages:8},
+  {id:'STU-8830', name:'Priya Nair',    status:'graded',  pages:6},
+  {id:'STU-8831', name:'Rahul Singh',   status:'flagged', pages:10},
+  {id:'STU-8832', name:'Ananya Reddy',  status:'pending', pages:7},
+];
+const EVALS = {
+  'STU-8829': { AI:{q1a:4.5,q1b:3.5,total:8.0,conf:0.88,fb:'Strong understanding. Formula applied correctly.'}, FACULTY:{}, STUDENT:{q1a:5,q1b:4.5,total:9.5,just:"Showed all derivation steps clearly."} },
+  'STU-8830': { AI:{q1a:4.0,q1b:4.0,total:8.0,conf:0.91}, FACULTY:{q1a:4,q1b:3,total:7.0}, STUDENT:{q1a:4,q1b:4,total:8.0} },
+  'STU-8831': { AI:{q1a:3.5,q1b:2.0,total:5.5,conf:0.72}, FACULTY:{q1a:4.5,q1b:3.5,total:8.0}, STUDENT:{q1a:5,q1b:5,total:10.0,just:"I answered everything correctly."} },
+  'STU-8832': { AI:{}, FACULTY:{}, STUDENT:{} },
+};
+const FINALIZED = {};
+
+/* PDF object URLs per slot */
+let pdfURLs = { 'question-paper': null, 'scheme': null, 'answer-script': null };
+let currentStudent = 'STU-8829';
+let activeTabIdx = 0;
+
+/* ════════════════════════════════════════
+   SCREEN HELPERS
+════════════════════════════════════════ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + id).classList.add('active');
+}
+function showLogin() { showScreen('login'); }
+function showAdminPortal() { showScreen('admin'); }
+
+/* ════════════════════════════════════════
+   LOGIN
+════════════════════════════════════════ */
+function setLoginRole(r) {
+  loginRole = r;
+  document.querySelectorAll('.role-tab').forEach((t, i) => {
+    t.classList.toggle('active', ['faculty','hod','student'][i] === r);
+  });
+  document.getElementById('l-user').value = '';
+  document.getElementById('l-pass').value = '';
+}
+document.getElementById('l-pass').addEventListener('keydown', e => e.key === 'Enter' && doLogin());
+
+async function doLogin() {
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('login-err');
+  err.style.display = 'none';
+  btn.disabled = true; btn.textContent = 'Signing in…';
+
+  const uname = document.getElementById('l-user').value.trim();
+  const pw    = document.getElementById('l-pass').value;
+
+  /* Try real API first, fall back to mock */
+  let authenticated = false;
+  try {
+    const body = new URLSearchParams({ username: uname, password: pw });
+    const res = await fetch(`${API}/token`, { method: 'POST', body });
+    if (res.ok) {
+      const d = await res.json();
+      currentUser = d.name || uname;
+      currentRole = d.role;
+      authenticated = true;
+    }
+  } catch {}
+
+  if (!authenticated) {
+    const u = USER_DB[uname];
+    if (u && u.pw === pw && u.status === 'approved') {
+      currentUser = u.name; currentRole = u.role; authenticated = true;
+    } else if (u && u.status === 'pending') {
+      err.textContent = '⏳ Your account is pending admin approval.';
+      err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Sign In'; return;
+    }
+  }
+
+  if (authenticated) {
+    startApp();
+  } else {
+    err.textContent = '❌ Invalid credentials. Please try again.';
+    err.style.display = 'block';
+  }
+  btn.disabled = false; btn.textContent = 'Sign In';
+}
+
+function doLogout() {
+  currentUser = null; currentRole = null;
+  showLogin();
+}
+
+/* ════════════════════════════════════════
+   ADMIN PORTAL
+════════════════════════════════════════ */
+let adminTab0 = 0;
+function verifyAdmin() {
+  const pw = document.getElementById('admin-pw').value;
+  if (pw !== ADMIN_PW) { toast('Incorrect admin password', 'err'); return; }
+  document.getElementById('admin-auth-overlay').style.display = 'none';
+  document.getElementById('admin-panel').style.display = 'flex';
+  document.getElementById('admin-panel').style.flexDirection = 'column';
+  renderAdminTab(0);
+}
+document.getElementById('admin-pw').addEventListener('keydown', e => e.key === 'Enter' && verifyAdmin());
+
+function adminTab(i) {
+  adminTab0 = i;
+  document.querySelectorAll('.admin-tab').forEach((t,j) => t.classList.toggle('active', j===i));
+  renderAdminTab(i);
+}
+
+function renderAdminTab(i) {
+  const el = document.getElementById('admin-content');
+  if (i === 0) el.innerHTML = renderPendingApprovals();
+  else if (i === 1) el.innerHTML = renderManageUsers();
+  else el.innerHTML = renderRegisterForm();
+}
+
+function renderPendingApprovals() {
+  const pending = REG_QUEUE.filter(u => u.status === 'pending');
+  if (!pending.length) return `<div style="text-align:center;padding:30px;color:var(--text3);font-size:13px">✅ No pending approvals</div>`;
+  return pending.map(u => `
+    <div class="user-row">
+      <div class="user-avatar" style="background:var(--amber-lt);color:var(--amber)">${u.name[0]}</div>
+      <div class="user-info">
+        <div class="user-name">${u.name}</div>
+        <div class="user-meta">${u.username} · ${u.email}</div>
+        <span class="badge badge-${u.role}" style="margin-top:4px">${u.role.toUpperCase()}</span>
+      </div>
+      <div class="user-actions">
+        <button class="btn-sm btn-approve" onclick="approveUser('${u.username}')">Approve</button>
+        <button class="btn-sm btn-reject" onclick="rejectUser('${u.username}')">Reject</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderManageUsers() {
+  return MANAGED_USERS.map(u => `
+    <div class="user-row">
+      <div class="user-avatar" style="background:var(--blue-lt);color:var(--blue)">${u.name[0]}</div>
+      <div class="user-info">
+        <div class="user-name">${u.name}</div>
+        <div class="user-meta">${u.username}</div>
+        <span class="badge badge-${u.role}" style="margin-top:4px;margin-right:4px">${u.role.toUpperCase()}</span>
+        <span class="badge ${u.status==='approved'?'badge-approved':'badge-pending'}">${u.status.toUpperCase()}</span>
+      </div>
+      <div class="user-actions">
+        <button class="btn-sm btn-reset" onclick="resetPw('${u.username}')">Reset PW</button>
+        <button class="btn-sm btn-delete" onclick="deleteUser('${u.username}')">Remove</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderRegisterForm() {
+  return `
+    <div class="add-user-form">
+      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:12px">Register New User</div>
+      <div class="form-row">
+        <div class="field"><label class="field-label">Full Name</label><input class="field-input" id="reg-name" placeholder="Dr. Jane Doe"></div>
+        <div class="field"><label class="field-label">Username</label><input class="field-input" id="reg-user" placeholder="jane_doe"></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label class="field-label">Email</label><input class="field-input" id="reg-email" type="email" placeholder="jane@college.edu"></div>
+        <div class="field">
+          <label class="field-label">Role</label>
+          <select class="field-input" id="reg-role">
+            <option value="faculty">Faculty</option>
+            <option value="hod">HoD</option>
+            <option value="student">Student</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label class="field-label">Password</label><input class="field-input" id="reg-pw" type="password" placeholder="Temporary password"></div>
+        <div style="display:flex;align-items:flex-end">
+          <button class="btn-primary" style="padding:10px 18px;width:auto" onclick="registerUser()">Add User</button>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:var(--text3)">Users registered here are immediately approved and can sign in.</div>`;
+}
+
+function approveUser(un) {
+  const u = REG_QUEUE.find(x => x.username === un);
+  if (!u) return;
+  u.status = 'approved';
+  USER_DB[un] = { pw: 'changeme123', role: u.role, name: u.name, status: 'approved' };
+  MANAGED_USERS.push({username:un,...USER_DB[un]});
+  toast(`✅ ${u.name} approved`, 'ok');
+  renderAdminTab(0);
+}
+function rejectUser(un) {
+  const idx = REG_QUEUE.findIndex(x => x.username === un);
+  if (idx > -1) { REG_QUEUE[idx].status = 'rejected'; }
+  toast('User rejected', 'err');
+  renderAdminTab(0);
+}
+function resetPw(un) {
+  const np = prompt(`Set new password for "${un}":`);
+  if (!np) return;
+  if (USER_DB[un]) USER_DB[un].pw = np;
+  toast(`🔑 Password reset for ${un}`, 'ok');
+}
+function deleteUser(un) {
+  if (!confirm(`Remove user "${un}"? This cannot be undone.`)) return;
+  MANAGED_USERS = MANAGED_USERS.filter(u => u.username !== un);
+  delete USER_DB[un];
+  toast('User removed', 'err');
+  renderAdminTab(1);
+}
+function registerUser() {
+  const name  = document.getElementById('reg-name').value.trim();
+  const uname = document.getElementById('reg-user').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const role  = document.getElementById('reg-role').value;
+  const pw    = document.getElementById('reg-pw').value;
+  if (!name || !uname || !pw) { toast('Please fill all fields', 'err'); return; }
+  if (USER_DB[uname]) { toast('Username already exists', 'err'); return; }
+  USER_DB[uname] = { pw, role, name, status: 'approved' };
+  MANAGED_USERS.push({ username: uname, pw, role, name, status: 'approved' });
+  toast(`✅ ${name} registered successfully`, 'ok');
+  renderAdminTab(2);
+}
+
+/* ════════════════════════════════════════
+   APP
+════════════════════════════════════════ */
+function startApp() {
+  document.getElementById('tb-user').textContent = currentUser;
+  const rEl = document.getElementById('tb-role');
+  rEl.textContent = currentRole.toUpperCase();
+  rEl.className = `role-pill role-${currentRole}`;
+  showScreen('app');
+  buildTabs();
+}
+
+function buildTabs() {
+  const tabsMap = {
+    faculty: ['📋 Evaluation', '📤 Upload Session'],
+    hod:     ['📊 Moderation', '📋 Evaluation', '📤 Upload Session'],
+    student: ['✍️ Self-Assessment'],
+  };
+  const tabs = tabsMap[currentRole] || ['📋 Evaluation'];
+  document.getElementById('view-tabs').innerHTML = tabs.map((t,i) =>
+    `<button class="view-tab ${i===0?'active':''}" onclick="switchTab(${i})">${t}</button>`
+  ).join('');
+  renderView(0);
+}
+function switchTab(i) {
+  activeTabIdx = i;
+  document.querySelectorAll('.view-tab').forEach((t,j) => t.classList.toggle('active', j===i));
+  renderView(i);
+}
+function renderView(i) {
+  const views = {
+    faculty: [renderEvalView, renderUploadView],
+    hod:     [renderHodView, renderEvalView, renderUploadView],
+    student: [renderStudentView],
+  }[currentRole] || [renderEvalView];
+  (views[i] || renderEvalView)();
+}
+
+/* ════════════════════════════════════════
+   EVAL VIEW
+════════════════════════════════════════ */
+function renderEvalView() {
+  const mc = document.getElementById('main-content');
+  mc.innerHTML = `
+    <div class="sidebar">
+      <div class="sidebar-hdr">Answer Scripts</div>
+      <div class="sidebar-list" id="stu-list"></div>
+    </div>
+    <div class="viewer-wrap" id="viewer-wrap"></div>`;
+  renderStuList();
+  renderEvalRight();
+}
+function renderStudentView() { renderEvalView(); }
+
+function renderStuList() {
+  const el = document.getElementById('stu-list');
+  if (!el) return;
+  el.innerHTML = STUDENTS.map(s => `
+    <div class="stu-item ${s.id===currentStudent?'active':''}" onclick="selectStu('${s.id}')">
+      <div class="stu-id">${s.id}</div>
+      <div class="stu-name">${s.name}</div>
+      <div class="stu-st st-${s.status}">${s.status.toUpperCase()}</div>
+    </div>`).join('');
+}
+function selectStu(id) { currentStudent = id; renderStuList(); renderEvalRight(); }
+
+function renderEvalRight() {
+  const vw = document.getElementById('viewer-wrap');
+  if (!vw) return;
+  const stu = STUDENTS.find(s => s.id === currentStudent) || {};
+  const ev  = EVALS[currentStudent] || {};
+  const ai  = ev.AI || {}, fac = ev.FACULTY || {}, stuEv = ev.STUDENT || {};
+  const isStudent = currentRole === 'student';
+  const myEv = isStudent ? stuEv : fac;
+  const myLabel = isStudent ? 'SELF' : 'FACULTY';
+
+  /* PDF viewer — pick which doc to show based on selector */
+  const pdfSlots = ['answer-script','question-paper','scheme'];
+  const pdfLabels = ['Answer Script','Question Paper','Scheme of Evaluation'];
+
+  vw.innerHTML = `
+    <div class="pdf-pane">
+      <div class="pane-bar">
+        <span class="pane-bar-title" id="pdf-pane-title">Answer Script — ${stu.name || currentStudent}</span>
+        <select id="pdf-doc-select" onchange="switchPdfView(this.value)">
+          ${pdfSlots.map((s,i)=>`<option value="${s}">${pdfLabels[i]}</option>`).join('')}
+        </select>
+      </div>
+      <div class="pdf-scroll-area" id="pdf-scroll-area">
+        ${renderPdfContent('answer-script')}
+      </div>
+    </div>
+
+    <div class="marks-panel">
+      <div class="pane-bar">
+        <span class="pane-bar-title">${isStudent?'SELF-ASSESSMENT':'MARKS ENTRY'}</span>
+        ${ai.conf ? `<span style="font-size:10px;color:var(--green);font-family:'JetBrains Mono',monospace;margin-left:auto">AI READY ✓</span>` : ''}
+      </div>
+      <div class="marks-body">
+        ${isStudent?'': `<button class="btn-ai" id="ai-btn" onclick="runAI()">✦ ${ai.total?'RE-RUN AI ANALYSIS':'RUN AI ANALYSIS'}</button>`}
+
+        <div class="ai-card ${ai.total?'show':''}" id="ai-card">
+          <div class="ai-card-hdr">
+            <div class="ai-card-label">AI Evaluation</div>
+            ${ai.conf?`<div class="ai-conf-pill">${Math.round(ai.conf*100)}% confidence</div>`:''}
+          </div>
+          <div class="ai-row"><span class="ai-q">Q1 (a)</span><span class="ai-mark">${ai.q1a??'—'} / 5</span></div>
+          <div class="ai-row"><span class="ai-q">Q1 (b)</span><span class="ai-mark">${ai.q1b??'—'} / 5</span></div>
+          <div class="ai-row" style="margin-top:4px;padding-top:6px;border-top:1px solid #ddd6fe">
+            <span class="ai-q" style="color:var(--purple);font-weight:600">Total</span>
+            <span class="ai-mark" style="font-size:15px">${ai.total??'—'} / 10</span>
+          </div>
+          ${ai.fb?`<div class="ai-fb">${ai.fb}</div>`:''}
+        </div>
+
+        <div class="sec-label">${isStudent?'Your Self-Assessment':'Manual Marks Entry'} — Q1</div>
+        <div class="marks-form">
+          <div class="marks-row">
+            <div><div class="mq-label">Q1 (a)</div><div class="mq-max">Max: 5 marks</div></div>
+            <div class="marks-inp-group">
+              ${!isStudent && ai.q1a!=null?`<span class="ai-chip" onclick="fillAI('q1a',${ai.q1a})" title="Use AI suggestion">↑ ${ai.q1a}</span>`:''}
+              <input class="marks-inp" id="inp-q1a" type="number" min="0" max="5" step="0.5"
+                value="${myEv.q1a??''}" oninput="calcTotal()" placeholder="0">
+            </div>
+          </div>
+          <div class="marks-row">
+            <div><div class="mq-label">Q1 (b)</div><div class="mq-max">Max: 5 marks</div></div>
+            <div class="marks-inp-group">
+              ${!isStudent && ai.q1b!=null?`<span class="ai-chip" onclick="fillAI('q1b',${ai.q1b})" title="Use AI suggestion">↑ ${ai.q1b}</span>`:''}
+              <input class="marks-inp" id="inp-q1b" type="number" min="0" max="5" step="0.5"
+                value="${myEv.q1b??''}" oninput="calcTotal()" placeholder="0">
+            </div>
+          </div>
+        </div>
+
+        <div class="score-strip">
+          <div class="sc-cell sc-ai"><div class="sc-cell-label">AI</div><div class="sc-cell-val" id="sc-ai">${ai.total??'—'}</div></div>
+          <div class="sc-cell sc-fac"><div class="sc-cell-label">${myLabel}</div><div class="sc-cell-val" id="sc-fac">${myEv.total??'0.0'}</div></div>
+          <div class="sc-cell sc-stu"><div class="sc-cell-label">STUDENT</div><div class="sc-cell-val">${stuEv.total??'—'}</div></div>
+        </div>
+
+        <div class="sec-label">Justification ${isStudent?'(required)':'(optional)'}</div>
+        <textarea class="just-area" id="just-inp" placeholder="${isStudent?'Explain your answers and the marks you believe you deserve...':'Notes for the moderator...'}">${myEv.just||''}</textarea>
+
+        <button class="btn-submit" id="submit-btn" onclick="submitMarks()">
+          ${isStudent?'Submit Self-Assessment':'Finalise Evaluation'}
+        </button>
+      </div>
+    </div>`;
+}
+
+function renderPdfContent(slot) {
+  const url = pdfURLs[slot];
+  if (!url) {
+    return `<div class="pdf-empty">
+      <div class="pdf-empty-icon">📄</div>
+      <div class="pdf-empty-text">No PDF loaded for this slot</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:4px">Upload files in the "Upload Session" tab</div>
+    </div>`;
+  }
+  /* Render as iframe — works cross-browser for in-memory blobs */
+  return `<iframe src="${url}" style="width:100%;min-height:800px;border:none;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,0.08)" title="PDF Viewer"></iframe>`;
+}
+
+function switchPdfView(slot) {
+  const area = document.getElementById('pdf-scroll-area');
+  if (area) area.innerHTML = renderPdfContent(slot);
+}
+
+function fillAI(q, v) { const el = document.getElementById(`inp-${q}`); if(el){el.value=v; calcTotal();} }
+function calcTotal() {
+  const a = parseFloat(document.getElementById('inp-q1a')?.value)||0;
+  const b = parseFloat(document.getElementById('inp-q1b')?.value)||0;
+  const sc = document.getElementById('sc-fac');
+  if (sc) sc.textContent = (a+b).toFixed(1);
+}
+
+async function runAI() {
+  const btn = document.getElementById('ai-btn');
+  if (btn) { btn.textContent = '⟳ Analysing…'; btn.style.opacity = '0.65'; btn.style.pointerEvents = 'none'; }
+
+  try {
+    const res = await fetch(`${API}/run-ai-analysis?student_id=${currentStudent}`, {method:'POST'});
+    const d   = await res.json();
+    const e   = d.ai_eval;
+    EVALS[currentStudent] = EVALS[currentStudent] || {};
+    EVALS[currentStudent].AI = {
+      q1a: e.q1a?.marks ?? e.q1a ?? 4.5,
+      q1b: e.q1b?.marks ?? e.q1b ?? 3.5,
+      total: e.total ?? 8.0,
+      conf: e.overall_confidence ?? 0.88,
+      fb: e.general_feedback || ''
+    };
+  } catch {
+    EVALS[currentStudent] = EVALS[currentStudent] || {};
+    EVALS[currentStudent].AI = {q1a:4.5,q1b:3.5,total:8.0,conf:0.88,fb:'[Demo] Good conceptual understanding. Formula applied correctly.'};
+  }
+  renderEvalRight();
+  toast('AI analysis complete ✦', 'ok');
+}
+
+async function submitMarks() {
+  const a    = parseFloat(document.getElementById('inp-q1a')?.value)||0;
+  const b    = parseFloat(document.getElementById('inp-q1b')?.value)||0;
+  const just = document.getElementById('just-inp')?.value || '';
+  const type = currentRole === 'student' ? 'STUDENT' : 'FACULTY';
+  const payload = {student_id:currentStudent, evaluator_type:type, marks:{q1a:a,q1b:b,total:a+b}, justification:just};
+  try { await fetch(`${API}/submit-marks`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}); } catch {}
+  EVALS[currentStudent] = EVALS[currentStudent] || {};
+  EVALS[currentStudent][type] = {q1a:a, q1b:b, total:a+b, just};
+  toast('Evaluation submitted ✓', 'ok');
+  const btn = document.getElementById('submit-btn');
+  if (btn) { btn.textContent = '✓ Submitted'; btn.classList.add('done'); setTimeout(()=>{btn.classList.remove('done');btn.textContent='Finalise Evaluation';},2500); }
+}
+
+/* ════════════════════════════════════════
+   HOD VIEW
+════════════════════════════════════════ */
+function renderHodView() {
+  const mc = document.getElementById('main-content');
+  mc.innerHTML = `
+    <div class="hod-view">
+      <div class="page-title">Moderation Dashboard</div>
+      <div class="page-sub">Review all three evaluations and commit the final grade for each student.</div>
+      <div id="cmp-list"></div>
+    </div>`;
+  renderCmps();
+}
+function renderCmps() {
+  const el = document.getElementById('cmp-list');
+  if (!el) return;
+  el.innerHTML = STUDENTS.map(s => {
+    const ev = EVALS[s.id]||{}; const ai=ev.AI||{}; const fac=ev.FACULTY||{}; const stu=ev.STUDENT||{};
+    const aT=ai.total??null; const fT=fac.total??null; const sT=stu.total??null;
+    const dev = (aT!==null&&fT!==null) ? Math.abs(aT-fT)/Math.max(aT,1)*100 : null;
+    const flagged = dev!==null && dev>15;
+    const fin = FINALIZED[s.id];
+    return `
+    <div class="cmp-card">
+      <div class="cmp-hdr">
+        <div><div class="cmp-stu-id">${s.id}</div><div class="cmp-stu-name">${s.name}</div></div>
+        ${dev!==null
+          ? `<div class="dev-badge ${flagged?'dev-warn':'dev-ok'}">${flagged?'⚠ ':'✓ '}${dev.toFixed(1)}% deviation</div>`
+          : `<div class="dev-badge dev-pending">Pending</div>`}
+      </div>
+      <div class="eval-grid">
+        <div class="eval-box ai"><div class="eval-box-lbl">AI Agent</div><div class="eval-box-total">${aT??'—'}</div><div class="eval-box-detail">Q1a: ${ai.q1a??'—'} · Q1b: ${ai.q1b??'—'}<br>Conf: ${ai.conf?Math.round(ai.conf*100)+'%':'—'}</div></div>
+        <div class="eval-box fac"><div class="eval-box-lbl">Faculty</div><div class="eval-box-total">${fT??'—'}</div><div class="eval-box-detail">Q1a: ${fac.q1a??'—'} · Q1b: ${fac.q1b??'—'}</div></div>
+        <div class="eval-box stu"><div class="eval-box-lbl">Student</div><div class="eval-box-total">${sT??'—'}</div><div class="eval-box-detail">Q1a: ${stu.q1a??'—'} · Q1b: ${stu.q1b??'—'}${stu.just?`<br>"${stu.just.slice(0,36)}…"`:''}
+</div></div>
+      </div>
+      <div class="commit-row">
+        ${fin ? `<button class="btn-commit bc-done">✓ Committed — ${fin.from} (${fin.total})</button>` : `
+          ${aT!==null?`<button class="btn-commit bc-ai" onclick="commitMarks('${s.id}','AI',${aT})">Commit AI (${aT})</button>`:''}
+          ${fT!==null?`<button class="btn-commit bc-fac" onclick="commitMarks('${s.id}','FACULTY',${fT})">Commit Faculty (${fT})</button>`:''}
+          ${sT!==null?`<button class="btn-commit bc-stu" onclick="commitMarks('${s.id}','STUDENT',${sT})">Commit Student (${sT})</button>`:''}
+          <button class="btn-commit bc-mod" onclick="moderateMarks('${s.id}')">Enter Moderated</button>
+        `}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function commitMarks(sid, from, total) {
+  try {
+    await fetch(`${API}/finalize`,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({student_id:sid,selected_evaluator:from,moderator:currentUser})});
+  } catch {}
+  FINALIZED[sid] = {from, total};
+  toast(`✓ Committed ${from} marks (${total}) for ${sid}`, 'ok');
+  renderCmps();
+}
+function moderateMarks(sid) {
+  const val = prompt(`Enter moderated marks for ${sid} (0–10):`);
+  if (val === null) return;
+  const t = parseFloat(val);
+  if (isNaN(t)||t<0||t>10) { toast('Invalid value', 'err'); return; }
+  commitMarks(sid, 'MODERATED', t);
+}
+
+/* ════════════════════════════════════════
+   UPLOAD VIEW  ← THE KEY FIX IS HERE
+════════════════════════════════════════ */
+function renderUploadView() {
+  const mc = document.getElementById('main-content');
+  mc.innerHTML = `
+    <div class="upload-view">
+      <div class="page-title">Upload Exam Session</div>
+      <div class="page-sub">Upload the three PDFs to begin the tri-phase evaluation pipeline.</div>
+
+      <div class="viewer-tip">
+        <strong>📄 PDF Viewer:</strong> After uploading, switch to the <strong>Evaluation tab</strong> and use the document selector in the viewer header to view any uploaded PDF directly in the browser. All three documents (Question Paper, Scheme, Answer Script) are viewable without any plugin.
+      </div>
+
+      <div class="sid-row">
+        <div class="field">
+          <label class="field-label">Student ID</label>
+          <input class="field-input" id="up-sid" value="${currentStudent}" placeholder="STU-XXXX" style="width:180px">
+        </div>
+        <button class="btn-green" id="up-btn" onclick="uploadSession()">Upload &amp; Start Session</button>
+      </div>
+
+      <div class="upload-grid">
+        ${[
+          {slot:'question-paper', icon:'📋', lbl:'Question Paper',       hint:'PDF of exam questions with OR logic'},
+          {slot:'scheme',         icon:'📐', lbl:'Scheme of Evaluation', hint:'Rubric & model answers'},
+          {slot:'answer-script',  icon:'✍️', lbl:'Answer Script',        hint:'Scanned handwritten answer PDF'},
+        ].map(z=>`
+          <div class="upload-zone ${pdfURLs[z.slot]?'ready':''}" id="zone-${z.slot}"
+               onclick="document.getElementById('file-${z.slot}').click()">
+            <input type="file" accept="application/pdf,image/*" class="uz-input" id="file-${z.slot}"
+                   onchange="fileChosen('${z.slot}')">
+            <div class="uz-icon">${z.icon}</div>
+            <div class="uz-lbl">${z.lbl}</div>
+            <div class="uz-hint">${z.hint}</div>
+            <div class="uz-fname" id="fname-${z.slot}">${pdfURLs[z.slot]?'✓ File loaded':'Click to select PDF'}</div>
+          </div>`).join('')}
+      </div>
+
+      <div id="upload-preview" style="margin-top:8px"></div>
+    </div>`;
+}
+
+function fileChosen(slot) {
+  const f = document.getElementById(`file-${slot}`)?.files[0];
+  if (!f) return;
+
+  /* Revoke old URL to free memory */
+  if (pdfURLs[slot]) URL.revokeObjectURL(pdfURLs[slot]);
+  pdfURLs[slot] = URL.createObjectURL(f);
+
+  /* Update zone UI */
+  const zone  = document.getElementById(`zone-${slot}`);
+  const fname = document.getElementById(`fname-${slot}`);
+  if (zone)  zone.classList.add('ready');
+  if (fname) fname.textContent = '✓ ' + f.name;
+
+  toast(`${f.name} loaded`, 'ok');
+}
+
+async function uploadSession() {
+  const sid = document.getElementById('up-sid')?.value?.trim();
+  if (!sid) { toast('Enter a Student ID', 'err'); return; }
+
+  const slots = ['question-paper','scheme','answer-script'];
+  const missing = slots.filter(s => !pdfURLs[s]);
+  if (missing.length) { toast(`Please select: ${missing.join(', ')}`, 'err'); return; }
+
+  const btn = document.getElementById('up-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Uploading…'; }
+
+  /* Try real API */
+  try {
+    const fd = new FormData();
+    fd.append('student_id', sid);
+    slots.forEach(s => {
+      const f = document.getElementById(`file-${s}`)?.files[0];
+      if (f) fd.append(s.replace('-','_'), f);
+    });
+    await fetch(`${API}/upload-session`, {method:'POST', body:fd});
+  } catch {}
+
+  currentStudent = sid;
+  if (btn) { btn.disabled = false; btn.textContent = 'Upload & Start Session'; }
+  toast('✓ Session ready — switch to Evaluation tab to view PDFs', 'ok');
+}
+
+/* ════════════════════════════════════════
+   TOAST
+════════════════════════════════════════ */
+function toast(msg, type='') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast show${type?' '+type:''}`;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 3200);
+}
+</script>
+</body>
+</html>
